@@ -9,6 +9,7 @@ import {
 import SocialAuth from 'react-native-social-auth';
 import Button from 'app/components/Button';
 import FirebaseStore from 'app/stores/Firebase';
+import NavStore from 'app/stores/Nav';
 
 @observer
 class Login extends Component {
@@ -24,9 +25,10 @@ class Login extends Component {
   _login() {
     SocialAuth.getFacebookCredentials(["email", "user_friends"], SocialAuth.facebookPermissionsType.read)
     .then((credentials) => {
-      console.log('logged in', credentials);
       const token = credentials.accessToken;
       FirebaseStore.login(token);
+      NavStore.goTo('feed');
+
     })
     .catch((error) => console.log(error))
   }

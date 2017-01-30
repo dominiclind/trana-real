@@ -10,7 +10,6 @@ import {
 
 import Modal from 'react-native-modalbox';
 
-import Workout from 'app/components/Workout';
 import Button from 'app/components/Button';
 import WorkoutStore from 'app/stores/Workout';
 import CardSlider from 'app/components/CardSlider';
@@ -25,7 +24,8 @@ class WorkoutScreen extends Component {
     super(props)
 
     this.state = {
-      modal: false,
+      endModal: false,
+      cancelModal: false,
       selectedEmoji : 1,
       emojis: [
       {
@@ -50,6 +50,10 @@ class WorkoutScreen extends Component {
     this.setState({myText: 'You swiped right!'});
   }
   showModal() {
+  }
+
+  cancelWorkout() {
+    WorkoutStore.cancelWorkout();
   }
   saveWorkout() {
     const { emojis, selectedEmoji } = this.state;
@@ -78,8 +82,8 @@ class WorkoutScreen extends Component {
         />
         <WorkoutNavbar
           startDate={WorkoutStore.startDate}
-          endWorkout={() => this.setState({modal: true}) }
-          cancelWorkout={() => WorkoutStore.cancelWorkout() }
+          endWorkout={() => this.setState({endModal: true}) }
+          cancelWorkout={() => this.setState({cancelModal: true}) }
         />
         { /* <View style={{alignItems: 'center', padding: 20}}>
           <Button onPress={() => WorkoutStore.endWorkout()}>
@@ -89,8 +93,8 @@ class WorkoutScreen extends Component {
         <Modal
           position="bottom"
           style={styles.modal}
-          isOpen={this.state.modal}
-          onClosed={() => this.setState({modal: false})}
+          isOpen={this.state.endModal}
+          onClosed={() => this.setState({endModal: false})}
           >
             <View style={{alignItems: 'center'}}>
               <Paragraph weight="bold" style={styles.text}>WORKOUT RATING</Paragraph>
@@ -109,6 +113,19 @@ class WorkoutScreen extends Component {
             </View>
             <Button bg="pink" color="black" onPress={() => this.saveWorkout() }>
               SAVE 💾
+            </Button>
+        </Modal>
+        <Modal
+          position="bottom"
+          style={[styles.modal, {height: 180}]}
+          isOpen={this.state.cancelModal}
+          onClosed={() => this.setState({cancelModal: false})}
+          >
+            <View style={{alignItems: 'center'}}>
+              <Paragraph weight="bold" style={styles.text}>CANCEL WORKOUT?</Paragraph>
+            </View>
+            <Button bg="pink" color="black" onPress={() => this.cancelWorkout() }>
+              🚮
             </Button>
         </Modal>
       </View>

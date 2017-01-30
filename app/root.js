@@ -13,7 +13,6 @@ import WorkoutScreen from 'app/screens/WorkoutScreen';
 import LoginScreen from 'app/screens/LoginScreen';
 import InitialScreen from 'app/screens/InitialScreen';
 import FeedScreen from 'app/screens/FeedScreen';
-
 import WorkoutList from 'app/screens/WorkoutList';
 
 import Firebase from 'app/stores/Firebase';

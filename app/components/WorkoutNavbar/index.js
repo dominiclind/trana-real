@@ -47,10 +47,12 @@ class WorkoutNavbar extends Component {
         <TouchableOpacity onPress={this.props.cancelWorkout}>
           <Paragraph style={styles.btn} weight="bold">CANCEL</Paragraph>
         </TouchableOpacity>
+        {/*}
         <View style={styles.elapsedTime}>
           {time ? <Paragraph weight="bold" style={styles.elapsedTimeText}>{cleanMinutes}:{cleanSeconds}</Paragraph> : null}
           <Paragraph weight="bold" style={styles.elapsedTimeLabel}>TIME ELAPSED</Paragraph>
         </View>
+        {*/}
         <TouchableOpacity onPress={this.props.endWorkout}>
           <Paragraph style={styles.btn} weight="bold">FINISH</Paragraph>
         </TouchableOpacity>
@@ -64,6 +66,8 @@ class WorkoutNavbar extends Component {
 const styles = StyleSheet.create({
   component : {
     backgroundColor:'transparent',
+    borderTopWidth: 2,
+    height: 75,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

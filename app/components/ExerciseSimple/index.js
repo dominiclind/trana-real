@@ -69,9 +69,11 @@ class ExerciseSimple extends Component {
           <Paragraph weight="bold" style={styles.tableHeaderReps}>REPS</Paragraph>
           <Paragraph weight="bold" style={styles.tableHeaderWeight}>WEIGHT</Paragraph>
         </View>
+
         <ScrollView
           style={styles.scrollView}
-          keyboardShouldPersistTaps={true}
+           keyboardShouldPersistTaps={true}
+          keyboardDismissMode="on-drag"
         >
           {this.state.sets.map((set, index) => {
             return (
@@ -93,7 +95,7 @@ class ExerciseSimple extends Component {
                     WorkoutStore.saveSet(exercise, index, {reps: this.state.sets[index].reps});
                   }}
                   autoCapitalize="characters"
-                  maxLength={2}
+                  maxLength={2} 
                   keyboardType="phone-pad"
                   returnKeyType="done"
                   autoCorrect={false}

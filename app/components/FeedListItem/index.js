@@ -30,7 +30,7 @@ class FeedListItem extends Component {
     if (hours > 15 && hours <= 18) {
       return 'dinner';
     }
-    if (hours > 18 && hours <= 0) {
+    if (hours > 18) {
       return 'night';
     }
   }

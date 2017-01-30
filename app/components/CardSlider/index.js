@@ -15,7 +15,6 @@ import Autocomplete from 'react-native-autocomplete-input';
 const { height, width } = Dimensions.get('window');
 
 import Header from 'app/components/Header';
-import Card from 'app/components/Card';
 import AddExercise from 'app/components/AddExercise';
 import StyledText from 'app/components/StyledText';
 import ExerciseSimple from 'app/components/ExerciseSimple';
@@ -131,6 +130,8 @@ class CardSlider extends Component {
     return (
       <View style={ styles.component }>
         <Animated.ScrollView 
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps={true}
           scrollEventThrottle={16}
           onMomentumScrollEnd={(e) => {this.onScrollEnd(e)}}
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: xOffset } } }])}

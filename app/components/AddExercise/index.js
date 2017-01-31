@@ -72,7 +72,7 @@ class AddExercise extends Component {
 
     return (
       <View style={ styles.component }>
-        <TextInput
+        <RCTKeyboardToolbarTextInput
           value={this.state.search}
           onChangeText={(text) => this.setState({search: text})}
           autoCapitalize="characters"

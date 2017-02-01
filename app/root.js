@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import codePush from "react-native-code-push";
+
 import {
   View,
   Text
@@ -19,6 +21,8 @@ import Firebase from 'app/stores/Firebase';
 import CardSliderStore from 'app/stores/CardSlider';
 import NavStore from 'app/stores/Nav';
 
+
+@codePush
 @observer
 class Root extends Component {
 

@@ -72,7 +72,7 @@ class ExerciseSimple extends Component {
 
         <ScrollView
           style={styles.scrollView}
-           keyboardShouldPersistTaps={true}
+          keyboardShouldPersistTaps={true}
           keyboardDismissMode="on-drag"
         >
           {this.state.sets.map((set, index) => {
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     fontSize: 30,
     fontFamily: 'Circular',
-    backgroundColor: 'transparent'
+    backgroundColor: 'rgba(0,0,0,.1)'
   },
   addNewSetWrap: {
     //marginTop: 20

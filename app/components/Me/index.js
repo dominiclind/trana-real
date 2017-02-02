@@ -4,9 +4,10 @@ import {
   View,
   Text,
   Image,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
-
+import codePush from "react-native-code-push";
 
 import Paragraph from 'app/components/Paragraph';
 
@@ -18,13 +19,20 @@ class Me extends Component {
 
   componentDidMount() {
   }
+  onButtonPress() {
+    codePush.sync({
+        updateDialog: true,
+        installMode: codePush.InstallMode.IMMEDIATE
+    });
+  }
 
   render() {
     const { user } = this.props;
-    console.log(user);
     return (
       <View style={ styles.component }>
-        <Image style={styles.avatar} source={{uri: user.photoURL }}/>
+        <TouchableOpacity onPress={this.onButtonPress}>
+          <Image style={styles.avatar} source={{uri: user.photoURL }}/>
+        </TouchableOpacity >
         <Paragraph style={{color:'black'}}>{user.displayName}</Paragraph>
       </View>
     )

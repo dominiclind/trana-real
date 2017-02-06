@@ -13,7 +13,7 @@
     "android:install": "cd android && ./gradlew assembleRelease && ./gradlew installRelease",
     "android:devices": "$ANDROID_HOME/platform-tools/adb devices",
     "android:logcat": "$ANDROID_HOME/platform-tools/adb logcat *:S ReactNative:V ReactNativeJS:V",
-    "codepush": "code-push release-react circuit ios"
+    "deploy": "code-push release-react circuit ios"
   },
   "dependencies": {
     "@shoutem/animation": "^0.8.10",

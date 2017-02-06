@@ -27,7 +27,7 @@ class Login extends Component {
     .then((credentials) => {
       const token = credentials.accessToken;
       FirebaseStore.login(token);
-      // NavStore.goTo('feed');
+      NavStore.goTo('feed');
 
     })
     .catch((error) => console.log(error))

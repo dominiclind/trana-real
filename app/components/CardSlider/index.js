@@ -118,20 +118,12 @@ class CardSlider extends Component {
       inputRange: [0, 200, 300],
       outputRange: [-110, 0, 0],
     });
-    // const introTransform = xOffset.interpolate({
-    //   inputRange: [-500, 0, 400],
-    //   outputRange: [-250, 0, 250],
-    // });
-    // const introOpac = xOffset.interpolate({
-    //   inputRange: [-220, 0, 300],
-    //   outputRange: [1, 1, 0],
-    // });
 
     return (
       <View style={ styles.component }>
         <Animated.ScrollView 
           keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps={true}
+          keyboardShouldPersistTaps="always"
           scrollEventThrottle={16}
           onMomentumScrollEnd={(e) => {this.onScrollEnd(e)}}
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: xOffset } } }])}

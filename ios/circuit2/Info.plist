@@ -32,7 +32,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>CodePushDeploymentKey</key>
-	<string>Mc7l7GMpWQBKx9MtdC9kImXFVJKOj_Okb</string>
+	<string>LT0-Mc7l7GMpWQBKx9MtdC9kImXFVJKOj_Okb</string>
 	<key>FacebookAppID</key>
 	<string>1402430153391650</string>
 	<key>FacebookDisplayName</key>
@@ -88,6 +88,7 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

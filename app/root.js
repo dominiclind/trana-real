@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import codePush from "react-native-code-push";
+let codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
 
 
 import {
@@ -8,8 +10,6 @@ import {
 import { observer } from 'mobx-react/native';
 
 import TabBar from 'app/components/TabBar';
-
-
 import KitchenSink from 'app/screens/KitchenSink';
 import WorkoutScreen from 'app/screens/WorkoutScreen';
 import LoginScreen from 'app/screens/LoginScreen';
@@ -21,7 +21,7 @@ import Firebase from 'app/stores/Firebase';
 import CardSliderStore from 'app/stores/CardSlider';
 import NavStore from 'app/stores/Nav';
 
-@observer
+@codePush(codePushOptions) @observer
 class Root extends Component {
 
 	renderView() {

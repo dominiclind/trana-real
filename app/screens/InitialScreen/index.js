@@ -9,6 +9,7 @@ import {
 
 import Firebase from 'app/stores/Firebase';
 
+
 @observer
 class InitialScreen extends Component {
 

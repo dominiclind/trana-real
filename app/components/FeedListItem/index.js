@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 
 import {
   View,
-  StyleSheet
+  StyleSheet,
+  Dimensions
 } from 'react-native';
 
 import Paragraph from 'app/components/Paragraph';
-
+import FavoriteStar from 'app/components/FavoriteStar';
 
 class FeedListItem extends Component {
 
@@ -18,9 +19,7 @@ class FeedListItem extends Component {
   }
 
   _getTimeOfDay(time) {
-    const hours = new Date(time).getHours();
-
-    console.log(hours);
+    const hours = new Date(time).getHours();5
     if (hours > 0 && hours < 10) {
       return 'morning';
     }
@@ -37,11 +36,11 @@ class FeedListItem extends Component {
 
   _renderExercises(exercises = []) {
     let exerciseString = '';
-    exercises.map(e => {
+    exercises.reverse().slice(0,2).map(e => {
       exerciseString += e.name + ', ';
     });
 
-    return exerciseString;
+    return exerciseString + '..';
   }
   render() {
     const { workout } = this.props;
@@ -52,15 +51,14 @@ class FeedListItem extends Component {
 
     return (
       <View style={ styles.component }>
-        <View style={styles.moodWrap}>
-          <Paragraph style={styles.mood}>{mood}</Paragraph>
-        </View>
+        <Paragraph style={styles.mood}>{mood}</Paragraph>
+        
         <View style={styles.content}>
           <Paragraph weight="bold" style={styles.feedHeader}>{this._getTimeOfDay(workout.endDate).toUpperCase()} WORKOUT</Paragraph>
           <Paragraph style={styles.exercises}>{this._renderExercises(workout.exercises)}</Paragraph>
         </View>
-        <View style={styles.favWrap}>
-        </View>
+
+        <FavoriteStar favorite={true}/>
       </View>
     )
   }
@@ -71,26 +69,35 @@ class FeedListItem extends Component {
 const styles = StyleSheet.create({
   component : {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
     marginBottom: 30,
     paddingHorizontal: 15
   },
   moodWrap: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: 60
   },
   mood: {
+    backgroundColor:'transparent',
+    width:40,
+    marginRight: 10,
     fontSize: 30,
     marginBottom: 0
   },
   content: {
-    paddingHorizontal: 15
+    // paddingHorizontal: 15
+    flex: 1,
+    backgroundColor: 'transparent'
   },
   feedHeader: {
-    fontSize: 16,
+    fontSize: 15,
     marginBottom: 5,
   },
   exercises: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'rgba(0,0,0,.2)',
     marginBottom: 0
   }

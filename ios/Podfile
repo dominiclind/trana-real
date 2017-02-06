@@ -8,7 +8,8 @@ source 'https://github.com/CocoaPods/Specs.git'
   'Firebase/Storage',
   'Firebase/Database',
   'Firebase/RemoteConfig',
-  'Firebase/Messaging'
+  'Firebase/Messaging',
+    ''
 ].each do |lib|
   pod lib
 end

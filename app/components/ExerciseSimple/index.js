@@ -72,7 +72,7 @@ class ExerciseSimple extends Component {
 
         <ScrollView
           style={styles.scrollView}
-          keyboardShouldPersistTaps={true}
+          keyboardShouldPersistTaps="always"
           keyboardDismissMode="on-drag"
         >
           {this.state.sets.map((set, index) => {

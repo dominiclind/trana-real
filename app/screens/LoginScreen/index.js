@@ -27,7 +27,7 @@ class Login extends Component {
     .then((credentials) => {
       const token = credentials.accessToken;
       FirebaseStore.login(token);
-      NavStore.goTo('feed');
+      // NavStore.goTo('feed');
 
     })
     .catch((error) => console.log(error))
@@ -36,11 +36,6 @@ class Login extends Component {
   render() {
     return (
       <View style={styles.screen}>
-        <Text
-          style={styles.screenHeader}
-        >
-          Login screen
-        </Text>
         <Button onPress={() => this._login() }>connect with facebook</Button>
       </View>
     )

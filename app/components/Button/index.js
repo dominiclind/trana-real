@@ -39,9 +39,9 @@ class Button extends Component {
     this.setState({ down: false });
   }
   render() {
-    const { pill = true, small = true, bg = '#343A40', color = 'white', style} = this.props;
+    const { pill = true, small = true, bg = '#00a9c0', color = 'white', style} = this.props;
     const { down } = this.state;
-    const darkerBG = onecolor(bg).black(.4);
+    const darkerBG = onecolor(bg).black(.3);
     const colorAnim = this.state.downAnim.interpolate({
       inputRange: [0, 1],
       outputRange: [
@@ -52,6 +52,16 @@ class Button extends Component {
     const colorStyle = {
       backgroundColor: colorAnim
     };
+    const shadowOpacity = this.state.downAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [ 0.5, .7]
+    });
+    const shadowHeight = this.state.downAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [10, 5]
+    });
+
+
     return (
       <TouchableWithoutFeedback
         onPress={this.props.onPress}
@@ -64,7 +74,14 @@ class Button extends Component {
             this.props.small ? styles.small : {},
             // color
             colorStyle,
-            style || {}
+            style || {},
+            { 
+              shadowColor: bg,
+              shadowOpacity,
+              shadowOffset: {
+                height: 10
+              }
+            }
           ]}
         >
           <StyledText weight="bold" style={[
@@ -91,9 +108,16 @@ const styles = StyleSheet.create({
   component : {
     paddingHorizontal: PADDING,
     height: HEIGHT,
+    borderRadius: HEIGHT / 2,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: PADDING * .2
+    marginBottom: PADDING * .2,
+    shadowOffset: {
+      width: 0,
+      height: 10
+    },
+    shadowRadius: 10,
+    shadowOpacity: .55
   },
   pill : {
     borderRadius: HEIGHT / 2

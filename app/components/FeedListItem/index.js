@@ -6,6 +6,8 @@ import {
   Dimensions
 } from 'react-native';
 
+import {distanceInWords} from 'date-fns'
+
 import Paragraph from 'app/components/Paragraph';
 import FavoriteStar from 'app/components/FavoriteStar';
 
@@ -19,19 +21,8 @@ class FeedListItem extends Component {
   }
 
   _getTimeOfDay(time) {
-    const hours = new Date(time).getHours();5
-    if (hours > 0 && hours < 10) {
-      return 'morning';
-    }
-    if (hours > 10 && hours <= 15) {
-      return 'lunch';
-    }
-    if (hours > 15 && hours <= 18) {
-      return 'dinner';
-    }
-    if (hours > 18) {
-      return 'night';
-    }
+    const hours = new Date(time).getHours();
+    return distanceInWords(new Date(time), new Date());
   }
 
   _renderExercises(exercises = []) {
@@ -54,7 +45,10 @@ class FeedListItem extends Component {
         <Paragraph style={styles.mood}>{mood}</Paragraph>
         
         <View style={styles.content}>
-          <Paragraph weight="bold" style={styles.feedHeader}>{this._getTimeOfDay(workout.endDate).toUpperCase()} WORKOUT</Paragraph>
+          <View style={styles.header}>
+            <Paragraph weight="bold" style={styles.feedHeading}>WORKOUT</Paragraph>
+            <Paragraph weight="bold" style={styles.feedDate}>{this._getTimeOfDay(workout.endDate).toUpperCase()} AGO</Paragraph>
+          </View>
           <Paragraph style={styles.exercises}>{this._renderExercises(workout.exercises)}</Paragraph>
         </View>
 
@@ -69,7 +63,6 @@ class FeedListItem extends Component {
 const styles = StyleSheet.create({
   component : {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'transparent',
     marginBottom: 30,
@@ -88,17 +81,31 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   content: {
-    // paddingHorizontal: 15
+    backgroundColor:'transparent',
     flex: 1,
+    justifyContent: 'space-between'
+  },
+  header: {
+    flexDirection: 'column',
+    backgroundColor: 'transparent',
+    margin:0
+  },
+  feedHeading: {
+    fontSize: 15,
+    lineHeight: 15,
+    marginBottom: 2,
     backgroundColor: 'transparent'
   },
-  feedHeader: {
-    fontSize: 15,
-    marginBottom: 5,
+  feedDate: {
+    fontSize: 11,
+    lineHeight: 14,
+    marginBottom: 8,
+    backgroundColor: 'transparent',
+    color: 'rgba(0,0,0,.3)'
   },
   exercises: {
     fontSize: 14,
-    color: 'rgba(0,0,0,.2)',
+    backgroundColor: 'transparent',
     marginBottom: 0
   }
 });

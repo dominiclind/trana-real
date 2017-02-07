@@ -9,7 +9,6 @@ import {
 
 import Firebase from 'app/stores/Firebase';
 
-
 @observer
 class InitialScreen extends Component {
 
@@ -18,6 +17,7 @@ class InitialScreen extends Component {
   }
 
   componentDidMount() {
+    Firebase.checkLogin();
   }
 
   render() {

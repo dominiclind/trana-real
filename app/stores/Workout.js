@@ -5,6 +5,8 @@ import {
   action
 } from 'mobx';
 
+import { Actions } from 'react-native-router-flux';
+
 import NavStore from 'app/stores/Nav';
 import CardSliderStore from 'app/stores/CardSlider';
 import Firebase from 'app/stores/Firebase';
@@ -70,12 +72,14 @@ class Workout {
     console.log('start workout');
     this.startDate = new Date().getTime();
 
-    NavStore.goTo('workout');
+    // NavStore.goTo('workout');
+    Actions.workout();
   }
   @action cancelWorkout() {
     this.startDate = false;
     this.exercises = [];
-    NavStore.goTo('feed');
+    // NavStore.goTo('feed');
+    Actions.feed()
   }
   @action endWorkout(mood) {
     const workoutToSend = {
@@ -112,7 +116,8 @@ class Workout {
     this.exercises = [];
     this.startDate = false;
     Firebase.saveWorkout(workoutToSend);
-    NavStore.goTo('feed');
+    // NavStore.goTo('feed');
+    Actions.feed()
   }  
 
 }

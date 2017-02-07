@@ -96,7 +96,7 @@ class FeedScreen extends Component {
 // styles
 const styles = StyleSheet.create({
   screen : {
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
     flex: 1,
     paddingTop: 50
   },
@@ -112,8 +112,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   bottomButtonWrap: {
-    marginTop: 10,
-    marginBottom: 0,
+    marginTop: 20,
+    marginBottom: 10,
     alignItems: 'center'
   }
 });

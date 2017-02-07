@@ -5,6 +5,8 @@ import {
   computed
 } from 'mobx';
 
+import { Actions } from 'react-native-router-flux';
+
 // const EXERCISES = [
 //   {
 //     name : 'Deadlift'
@@ -67,6 +69,12 @@ class Firebase {
     // place reactions and autoruns here.
     this.firestack = new Firestack(configurationOptions);
     this.firestack.on('debug', msg => this.debugLog(msg));
+  }
+
+  @action debugLog(msg) {
+    console.log(msg);
+  }
+  @action checkLogin() {
     this.firestack.auth.listenForAuth((evt) => {
       // evt is the authentication event
       if (!evt.authenticated) {
@@ -75,17 +83,11 @@ class Firebase {
         // NavStore.goTo('login');
       } else {
         // evt.user contains the user details
-        console.log('User details', evt.user);
         this.user = evt.user;
-        // NavStore.goTo('workout');
-        // NavStore.goTo('feed');
+        Actions.feed();
       }
     })
-    .then(() => console.log('Listening for authentication changes'))
-  }
-
-  @action debugLog(msg) {
-    console.log(msg);
+    .then(() => console.log('Listening for authentication changes'));
   }
   @action login(token) {
     this.firestack.auth.signInWithProvider('facebook', token, '')

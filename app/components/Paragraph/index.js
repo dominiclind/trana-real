@@ -18,7 +18,8 @@ const Paragraph = (props) => (
 // styles
 const styles = StyleSheet.create({
   text : {
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
+    color: '#343a40',
     fontSize: 18,
    // lineHeight: 25,
     marginBottom: 20

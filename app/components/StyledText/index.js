@@ -61,6 +61,7 @@ class StyledText extends Component {
 const styles = StyleSheet.create({
   text : {
     fontFamily: 'Circular',
+    color: '#343a40'
   }
 });
 

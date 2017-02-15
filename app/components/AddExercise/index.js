@@ -38,6 +38,8 @@ class AddExercise extends Component {
 
   addNewExercise() {
     const { search } = this.state;
+    
+    // have to get key from firebase, then save workout
     WorkoutStore.addExercise({name: search.trim().toProperCase()})
     Firebase.saveExercise({name: search.trim().toProperCase()});
     
@@ -51,17 +53,17 @@ class AddExercise extends Component {
   _filter(exercises){
     const { search } = this.state;
     const { exercises:chosenExercises } = WorkoutStore;
-    const chosen = chosenExercises.toJSON().map(e => e.name.toLowerCase());
+    const chosen = chosenExercises.toJSON().map(e => e.value.name.toLowerCase());
 
     // if (search.length) {
-
-      return exercises.filter(e => {
-        if (e.name.toLowerCase().indexOf(search.toLowerCase()) > -1 &&
-            chosen.indexOf(e.name.toLowerCase()) == -1
-          ){
-          return e;
-        }
-      });
+    return exercises.filter(exercise => {
+      const e = exercise.value;
+      if (e.name.toLowerCase().indexOf(search.toLowerCase()) > -1 &&
+          chosen.indexOf(e.name.toLowerCase()) == -1
+        ){
+        return e;
+      }
+    });
     // } else {
     //   return []
     // }
@@ -81,12 +83,13 @@ class AddExercise extends Component {
           style={styles.input}
         />
         <ScrollView
-          keyboardDismissMode="none"
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="always"
         >
-          {this._filter(exercises).map((e, i) => {
+          {this._filter(exercises).map((exercise, i) => {
             return (
-              <TouchableOpacity key={e.name} style={styles.listItem} onPress={() => this.addExercise(e)}>
-                <Paragraph weight="bold">{e.name.toUpperCase()}</Paragraph>
+              <TouchableOpacity key={exercise.value.name} style={styles.listItem} onPress={() => this.addExercise(exercise)}>
+                <Paragraph weight="bold">{exercise.value.name.toUpperCase()}</Paragraph>
               </TouchableOpacity>
             )
           })}

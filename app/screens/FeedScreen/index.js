@@ -14,6 +14,7 @@ import Me from 'app/components/Me';
 import Button from 'app/components/Button';
 import FeedListItem from 'app/components/FeedListItem';
 import sort from 'app/utils/sort';
+import {getExercisesForWorkout} from 'app/utils/workout';
 
 const weekday = [];
 weekday[0] = "Sunday";
@@ -32,15 +33,17 @@ class FeedScreen extends Component {
 
     this.state = {
       loaded : false,
-      feed: {}
+      feed: []
     }
   }
 
   componentDidMount() {
-    console.log('feed mount');
-    Firebase.getMyFeed().then(feed => {
-      console.log(sort(feed));
-      this.setState({feed: sort(feed), loaded: true});
+    Promise.all([Firebase.getMyFeed(), Firebase.getExercises()]).then(response => {
+      this.setState({
+        feed: response[0],
+        exercises: response[1],
+        loaded: true
+      });
     });
   }
 
@@ -48,8 +51,6 @@ class FeedScreen extends Component {
     const { feed } = this.state;
     if (feed.byday) {
       return Object.keys(feed.byday).map((key) => {
-        console.log(new Date(key));
-        console.log('hej');
         return (
           <View key={key}>
             <Paragraph>{weekday[new Date(key).getDay()]}</Paragraph>
@@ -61,11 +62,17 @@ class FeedScreen extends Component {
     }
   }
   renderItem() {
-    const { feed } = this.state;
-
-    if (feed.original) {
-      return feed.original.map((workout,i) => {
-        return <FeedListItem key={i} workout={workout} />
+    const { feed, exercises } = this.state;
+    if (feed) {
+      return feed.reverse().map((item,i) => {
+        return (
+          <FeedListItem
+            key={i} 
+            id={item.id}
+            workout={item.value}
+            exercises={getExercisesForWorkout(item.value.exercises, exercises)}
+          />
+        )
       });
     } else {
       return null;

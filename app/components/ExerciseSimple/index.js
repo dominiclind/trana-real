@@ -50,11 +50,13 @@ class ExerciseSimple extends Component {
 
   render() {
     const { fullscreen, exercise } = this.props;
-    const { name } = exercise;
+    const { id, value } = exercise;
+    
+    console.log(value, id);
 
     return (
       <View style={ styles.component }>
-        <Header>{name}</Header>
+        <Header>{value.name}</Header>
 
         <Icon
           style={styles.close}

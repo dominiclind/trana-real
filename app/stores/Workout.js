@@ -30,7 +30,7 @@ class Workout {
   @action deleteExercise(exercise){
     let foundIndex = false;
     this.exercises.map((e, index) => {
-      if (e.name == exercise.name) {
+      if (e.value.name == exercise.value.name) {
         foundIndex = index;
       }
     });
@@ -46,7 +46,7 @@ class Workout {
     });
 
     this.exercises.map(e => {
-      if (e.name == exercise.name) {
+      if (e.value.name == exercise.value.name) {
         e.sets = sets;
       }
     });
@@ -57,7 +57,7 @@ class Workout {
     //this.totalSets++;
 
     this.exercises.map(e => {
-      if (e.name == exercise.name) {
+      if (e.value.name == exercise.value.name) {
         // add weight & reps and 
         // mark as done
         const saveSet = {
@@ -83,7 +83,6 @@ class Workout {
   }
   @action endWorkout(mood) {
     const workoutToSend = {
-      favorite: false,
       mood,
       exercises: [],
       startDate: this.startDate,
@@ -91,7 +90,6 @@ class Workout {
     };
 
     // clean mobx array
-
     for (var i = this.exercises.length - 1; i >= 0; i--) {
       const e = this.exercises[i];
 
@@ -108,7 +106,7 @@ class Workout {
 
       if (cleanSets.length) {
         workoutToSend.exercises.push({
-          name: e.name,
+          id: e.id,
           sets : cleanSets
         });
       }

@@ -34,10 +34,11 @@ class FeedListItem extends Component {
     return exerciseString + '..';
   }
   render() {
-    const { workout } = this.props;
+    const { workout, id, exercises } = this.props;
     const {
       mood,
-      endDate
+      endDate,
+      favorite
     } = workout;
 
     return (
@@ -49,10 +50,10 @@ class FeedListItem extends Component {
             <Paragraph weight="bold" style={styles.feedHeading}>WORKOUT</Paragraph>
             <Paragraph weight="bold" style={styles.feedDate}>{this._getTimeOfDay(workout.endDate).toUpperCase()} AGO</Paragraph>
           </View>
-          <Paragraph style={styles.exercises}>{this._renderExercises(workout.exercises)}</Paragraph>
+          <Paragraph style={styles.exercises}>{this._renderExercises(exercises)}</Paragraph>
         </View>
 
-        <FavoriteStar favorite={true}/>
+        <FavoriteStar id={id} favorite={favorite}/>
       </View>
     )
   }

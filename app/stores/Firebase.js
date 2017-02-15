@@ -5,6 +5,14 @@ import {
   computed
 } from 'mobx';
 
+const returnFirebaseAsArray = (snapshot) => {
+  const toReturn = [];
+  snapshot.forEach((item) => {
+    toReturn.push({value: item.value, id: item.key });
+  });
+  return toReturn
+}
+
 import { Actions } from 'react-native-router-flux';
 
 // const EXERCISES = [
@@ -103,8 +111,48 @@ class Firebase {
       this.firestack.database.ref('users').child(uid).child('workouts').push(workout)
     }
   }
+  @action toggleFavorite(childKey, currentState) {
+    const { uid } = this.user;
+    if (!uid) {
+      console.error('no user loggedin');
+    } else{
+     //  this.firestack.database.ref('users').child(uid).child('workouts').push(workout);
+      console.log('child key to update: ', childKey);
+      
+      this.firestack.database.ref('users')
+      .child(uid)
+      .child('workouts/' + childKey)
+      .once('value')
+      .then((snapshot) => {
+        if (snapshot.val) {
+          const updates = {};
+          updates[childKey] = {
+            ...snapshot.val(),
+            favorite: !snapshot.val().favorite
+          }
+          this.firestack.database.ref('users')
+          .child(uid)
+          .child('workouts')
+          .update(updates);
+        }
+      })
+
+    }
+  }
   @action saveExercise(exercise) {
-    this.firestack.database.ref('exercises').push(exercise);
+    // save exercise to all
+    // this.firestack.database.ref('exercises').push(exercise);
+  
+    // save only to user
+    const { uid } = this.user;
+    if (!uid) {
+      console.error('no user loggedin');
+    } else{
+      this.firestack.database.ref('users')
+      .child(uid)
+      .child('exercises')
+      .push(exercise)
+    }
   }
   @action getExercises() {
     return new Promise((resolve, reject) => {
@@ -112,11 +160,7 @@ class Firebase {
       .once('value')
       .then((snapshot) => {
         if (snapshot.val) {
-          const returnExercises = [];
-          snapshot.forEach((exercise) => {
-            returnExercises.push({name : exercise.value.name });
-          });
-          resolve(returnExercises);
+          resolve(returnFirebaseAsArray(snapshot));
         }
       })
     }).catch(error => console.log(error));
@@ -133,7 +177,7 @@ class Firebase {
         .once('value')
         .then((snapshot) => {
           if (snapshot.val) {
-            resolve(snapshot.val() || {});
+            resolve(returnFirebaseAsArray(snapshot));
           }
         })
       }).catch(error => console.log(error));

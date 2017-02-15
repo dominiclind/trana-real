@@ -1,8 +1,12 @@
 const Sort = (feed) => {
 	// const eventsArray = [ {id: 1, date: 1387271989749 }, {id:2, date: 1387271989760} ];
-	const array = Object.keys(feed).map((key) => {
-		return feed[key];
-	});
+	// const array = Object.keys(feed).map((key) => {
+	// 	const returnObj = {
+	// 		...feed[key],
+	// 		id: key
+	// 	}
+	// 	return returnObj;
+	// });
 
 	const byday={};
 	const byweek={};

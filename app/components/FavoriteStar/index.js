@@ -26,10 +26,6 @@ class FavoriteStar extends Component {
 
   render() {
     const { id } = this.props;
-
-    console.log(this.props);
-    console.log(this.state.favorite);
-
     return (
         <TouchableWithoutFeedback onPress={() => {
           this.setState({favorite: !this.state.favorite});

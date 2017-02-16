@@ -35,8 +35,12 @@ class Workout {
       this.rehydrated = true;
       const exercises = results[0];
       const startDate = results[1];
-      this.exercises = exercises;
-      this.startDate = startDate;
+      if (exercises != null) {
+        this.exercises = exercises;
+      }
+      if (startDate != null) {
+        this.startDate = startDate;
+      }
     });
   }
 
@@ -108,9 +112,8 @@ class Workout {
     // NavStore.goTo('feed');
     Actions.feed();
 
-
-    store.save('exercises', this.exercises.toJSON());
-    store.save('startDate', this.startDate);
+    store.delete('exercises');
+    store.delete('startDate');
   }
   @action endWorkout(mood) {
     const workoutToSend = {
@@ -147,8 +150,8 @@ class Workout {
     Firebase.saveWorkout(workoutToSend);
     // NavStore.goTo('feed');
 
-    store.save('exercises', this.exercises.toJSON());
-    store.save('startDate', this.startDate);
+    store.delete('exercises');
+    store.delete('startDate');
     Actions.feed()
   }  
 }

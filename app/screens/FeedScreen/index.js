@@ -38,10 +38,15 @@ class FeedScreen extends Component {
   }
 
   componentDidMount() {
-    Promise.all([Firebase.getMyFeed(), Firebase.getExercises()]).then(response => {
+    Promise.all([
+      Firebase.getMyFeed(),
+      Firebase.getExercises(),
+      Firebase.getFavoriteWorkouts()
+    ]).then(response => {
       this.setState({
         feed: response[0],
         exercises: response[1],
+        favorites: response[2],
         loaded: true
       });
     });
@@ -63,13 +68,14 @@ class FeedScreen extends Component {
     }
   }
   renderItem() {
-    const { feed, exercises } = this.state;
+    const { feed, exercises, favorites } = this.state;
     if (feed) {
       return feed.reverse().map((item,i) => {
         return (
           <FeedListItem
             key={i} 
             id={item.id}
+            favorite={favorites.indexOf(item.id) > -1}
             workout={item.value}
             exercises={getExercisesForWorkout(item.value.exercises, exercises)}
           />

@@ -34,11 +34,10 @@ class FeedListItem extends Component {
     return exerciseString + '..';
   }
   render() {
-    const { workout, id, exercises } = this.props;
+    const { workout, id, exercises, favorite } = this.props;
     const {
       mood,
-      endDate,
-      favorite
+      endDate
     } = workout;
 
     return (

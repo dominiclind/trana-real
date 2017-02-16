@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   StyleSheet
 } from 'react-native';
 
@@ -26,17 +26,20 @@ class FavoriteStar extends Component {
 
   render() {
     const { id } = this.props;
-    const { favorite } = this.state;
+
+    console.log(this.props);
+    console.log(this.state.favorite);
 
     return (
-      <View style={[styles.component, {opacity: favorite ? 1 : .3}]}>
-        <TouchableOpacity onPress={() => {
+        <TouchableWithoutFeedback onPress={() => {
           this.setState({favorite: !this.state.favorite});
           FirebaseStore.toggleFavorite(id);
         }}>
-          <Paragraph style={[styles.star]}>⭐</Paragraph>
-        </TouchableOpacity>
-      </View>
+          <View style={[styles.component, {opacity: this.state.favorite ? 1 : .3}]}>
+            <Paragraph style={[styles.star]}>⭐</Paragraph>
+          </View>
+        </TouchableWithoutFeedback>
+      
     )
   }
 }

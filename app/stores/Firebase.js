@@ -5,6 +5,10 @@ import {
   computed
 } from 'mobx';
 
+
+import store from 'react-native-simple-store';
+
+
 const returnFirebaseAsArray = (snapshot) => {
   const toReturn = [];
   snapshot.forEach((item) => {
@@ -14,51 +18,6 @@ const returnFirebaseAsArray = (snapshot) => {
 }
 
 import { Actions } from 'react-native-router-flux';
-
-// const EXERCISES = [
-//   {
-//     name : 'Deadlift'
-//   },
-//   {
-//     name : 'Thrusters'
-//   },
-//   {
-//     name : 'Lunges'
-//   },
-//   {
-//     name : 'Squat'
-//   },
-//   {
-//     name : 'Burpees'
-//   },
-//   {
-//     name : 'Chins'
-//   },
-//   {
-//     name : 'Bench Press'
-//   },
-//   {
-//     name : 'Dips'
-//   },
-//   {
-//     name : 'Bent over row'
-//   },
-//   {
-//     name : 'Squat Cleans'
-//   },
-//   {
-//     name : 'Kettlebell Swings'
-//   },
-//   {
-//     name : 'Military Press'
-//   },
-//   {
-//     name : 'Russian Twist'
-//   },
-//   {
-//     name : 'Crunches'
-//   }
-// ];
 
 import Firestack from 'react-native-firestack';
 import NavStore from 'app/stores/Nav';
@@ -77,6 +36,12 @@ class Firebase {
     // place reactions and autoruns here.
     this.firestack = new Firestack(configurationOptions);
     this.firestack.on('debug', msg => this.debugLog(msg));
+
+    store.get('user').then(user => {
+      if (user) {
+        this.user = user;
+      }
+    });
   }
 
   @action debugLog(msg) {
@@ -92,6 +57,7 @@ class Firebase {
       } else {
         // evt.user contains the user details
         this.user = evt.user;
+        store.save('user', evt.user);
         Actions.feed();
       }
     })
@@ -117,23 +83,25 @@ class Firebase {
       console.error('no user loggedin');
     } else{
      //  this.firestack.database.ref('users').child(uid).child('workouts').push(workout);
-      console.log('child key to update: ', childKey);
-      
+      console.log('key of favorite workout: ', childKey);
       this.firestack.database.ref('users')
       .child(uid)
-      .child('workouts/' + childKey)
+      .child('favoriteWorkouts')
       .once('value')
-      .then((snapshot) => {
+      .then(snapshot => {
         if (snapshot.val) {
-          const updates = {};
-          updates[childKey] = {
-            ...snapshot.val(),
-            favorite: !snapshot.val().favorite
+          const favs = snapshot.val() == null ? [] : snapshot.val();
+
+          if (favs.indexOf(childKey) == -1) {
+            favs.push(childKey);
+          } else {
+            favs.splice(favs.indexOf(childKey), 1);
           }
+
           this.firestack.database.ref('users')
           .child(uid)
-          .child('workouts')
-          .update(updates);
+          .child('favoriteWorkouts')
+          .set(favs)
         }
       })
 
@@ -154,6 +122,26 @@ class Firebase {
       .push(exercise)
     }
   }
+
+  @action getFavoriteWorkouts() {
+    const { uid } = this.user;
+    if (!uid) {
+      console.error('no user loggedin');
+    } else{
+      return new Promise((resolve, reject) => {
+        this.firestack.database.ref('users')
+        .child(uid)
+        .child('favoriteWorkouts')
+        .once('value')
+        .then((snapshot) => {
+          if (snapshot.val) {
+            resolve(snapshot.val() || []);
+          }
+        })
+      }).catch(error => console.log(error));
+    }
+  }
+  
   @action getExercises() {
     return new Promise((resolve, reject) => {
       this.firestack.database.ref('exercises')
@@ -165,6 +153,7 @@ class Firebase {
       })
     }).catch(error => console.log(error));
   }
+
   @action getMyFeed() {
     const { uid } = this.user;
     if (!uid) {
@@ -183,5 +172,6 @@ class Firebase {
       }).catch(error => console.log(error));
     }
   }
+
 }
 export default new Firebase();

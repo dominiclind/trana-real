@@ -15,7 +15,6 @@ import WorkoutStore from 'app/stores/Workout';
 import CardSlider from 'app/components/CardSlider';
 import WorkoutNavbar from 'app/components/WorkoutNavbar';
 import Paragraph from 'app/components/Paragraph';
-import CardSliderStore from 'app/stores/CardSlider';
 
 @observer
 class WorkoutScreen extends Component {
@@ -64,7 +63,6 @@ class WorkoutScreen extends Component {
   }
 
   render() {
-    const { fullscreen } = CardSliderStore;
     const { 
       exercises,
       amountOfExercises,
@@ -77,7 +75,6 @@ class WorkoutScreen extends Component {
       > 
         <CardSlider
           totalSets={totalSets}
-          fullscreen={fullscreen}
           content={exercises}
         />
         <WorkoutNavbar

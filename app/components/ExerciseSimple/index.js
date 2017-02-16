@@ -23,7 +23,7 @@ class ExerciseSimple extends Component {
 
     this.state = {
       currentSet: 0,
-      sets: []
+      sets: props.exercise.sets
     }
   }
 
@@ -44,7 +44,6 @@ class ExerciseSimple extends Component {
   }
   deleteExercise() {
     const { exercise } = this.props;
-    console.log(exercise);
     WorkoutStore.deleteExercise(exercise);
   }
 
@@ -52,8 +51,6 @@ class ExerciseSimple extends Component {
     const { fullscreen, exercise } = this.props;
     const { id, value } = exercise;
     
-    console.log(value, id);
-
     return (
       <View style={ styles.component }>
         <Header>{value.name}</Header>

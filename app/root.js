@@ -16,7 +16,6 @@ import WorkoutList from 'app/screens/WorkoutList';
 import Routes from 'app/router';
 
 import Firebase from 'app/stores/Firebase';
-import CardSliderStore from 'app/stores/CardSlider';
 import NavStore from 'app/stores/Nav';
 
 @codePush(codePushOptions) @observer
@@ -87,10 +86,6 @@ class Root extends Component {
   }
 
   render () {
-  	const { fullscreen } = CardSliderStore;
-		/*this.renderView()*/
-    /*<TabBar fullscreen={fullscreen} />*/
-    
     return (
     	<Routes />
     );

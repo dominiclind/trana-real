@@ -49,6 +49,7 @@ class FeedScreen extends Component {
 
   renderItemByDay() {
     const { feed } = this.state;
+
     if (feed.byday) {
       return Object.keys(feed.byday).map((key) => {
         return (
@@ -81,6 +82,7 @@ class FeedScreen extends Component {
   render() {
     const { user } = Firebase;
     const { feed, loaded } = this.state;
+    const { startDate, rehydrated } = WorkoutStore;
 
     return (
       <View style={styles.screen}>
@@ -92,7 +94,13 @@ class FeedScreen extends Component {
           </ScrollView>
         </View>
         <View style={styles.bottomButtonWrap}>
-          <Button onPress={() => WorkoutStore.startWorkout()}>START WORKOUT</Button>
+          {rehydrated ? (
+          <Button onPress={() => WorkoutStore.startWorkout()}>
+            {
+              startDate ? 'resume workout' : 'start workout'
+            }
+          </Button>
+          ) : null}
         </View>
       </View>
     )

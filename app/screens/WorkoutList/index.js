@@ -8,8 +8,6 @@ import {
 
 
 import WorkoutStore from 'app/stores/Workout';
-import CardSliderStore from 'app/stores/CardSlider';
-
 
 import CardSlider from 'app/components/CardSlider';
 
@@ -24,9 +22,7 @@ class WorkoutList extends Component {
   }
 
   render() {
-    const { fullscreen } = CardSliderStore;
     const { workouts } = WorkoutStore;
-    console.log('workout list view');
 
     return (
       <View style={styles.screen}>

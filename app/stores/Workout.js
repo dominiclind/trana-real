@@ -4,17 +4,18 @@ import {
   computed,
   action
 } from 'mobx';
-
+import remotedev from 'mobx-remotedev';
+import { AsyncStorage} from 'react-native';
 import { Actions } from 'react-native-router-flux';
-
+import store from 'react-native-simple-store';
 import NavStore from 'app/stores/Nav';
-import CardSliderStore from 'app/stores/CardSlider';
 import Firebase from 'app/stores/Firebase';
 
 class Workout {
   @observable startDate = false;
   @observable exercises = [];
   @observable totalSets = 0;
+  @observable rehydrated = false;
 
   @computed get amountOfExercises () {
     return this.exercises.length;
@@ -22,10 +23,26 @@ class Workout {
 
   constructor() {
     // place reactions and autoruns here.
+    this.rehydrate();
   }
+
+  @action rehydrate() {
+    Promise.all([
+      store.get('exercises'),
+      store.get('startDate')
+    ]).then(results => {
+      console.log('--rehydrated--');
+      this.rehydrated = true;
+      const exercises = results[0];
+      const startDate = results[1];
+      this.exercises = exercises;
+      this.startDate = startDate;
+    });
+  }
+
   @action addExercise(exercise){
-    console.log('-- added exercise--' , exercise);
     this.exercises.push({...exercise, sets: []});
+    store.save('exercises', this.exercises.toJSON());
   }
   @action deleteExercise(exercise){
     let foundIndex = false;
@@ -35,10 +52,12 @@ class Workout {
       }
     });
     this.exercises.splice(foundIndex, 1);
+
+    store.save('exercises', this.exercises.toJSON());
   }
   @action addSet(exercise){
     const sets = exercise.sets || [];
-    this.totalSets++;
+
     sets.push({
       done: false,
       reps: '0',
@@ -50,6 +69,8 @@ class Workout {
         e.sets = sets;
       }
     });
+
+    store.save('exercises', this.exercises.toJSON());
   }
   @action saveSet(exercise, currentSet, newSet){
     const sets = exercise.sets || [];
@@ -57,7 +78,7 @@ class Workout {
     //this.totalSets++;
 
     this.exercises.map(e => {
-      if (e.value.name == exercise.value.name) {
+      if (e.id.name == exercise.id) {
         // add weight & reps and 
         // mark as done
         const saveSet = {
@@ -67,11 +88,17 @@ class Workout {
         sets[currentSet] = saveSet;
       }
     });
+
+    store.save('exercises', this.exercises.toJSON());
   }
   @action startWorkout() {
-    console.log('start workout');
-    this.startDate = new Date().getTime();
-
+    if (!this.startDate) {
+      console.log('start new workout');
+      this.startDate = new Date().getTime();
+      store.save('startDate', this.startDate);
+    } else{
+      console.log('resume workout!');
+    }
     // NavStore.goTo('workout');
     Actions.workout();
   }
@@ -79,7 +106,11 @@ class Workout {
     this.startDate = false;
     this.exercises = [];
     // NavStore.goTo('feed');
-    Actions.feed()
+    Actions.feed();
+
+
+    store.save('exercises', this.exercises.toJSON());
+    store.save('startDate', this.startDate);
   }
   @action endWorkout(mood) {
     const workoutToSend = {
@@ -115,9 +146,18 @@ class Workout {
     this.startDate = false;
     Firebase.saveWorkout(workoutToSend);
     // NavStore.goTo('feed');
+
+    store.save('exercises', this.exercises.toJSON());
+    store.save('startDate', this.startDate);
     Actions.feed()
   }  
-
 }
 
-export default new Workout();
+const workout = remotedev(new Workout, {
+  name: 'WorkoutStore',
+  // remote: true,
+  // onlyActions: true
+});
+
+export default workout;
+// export default new Workout();

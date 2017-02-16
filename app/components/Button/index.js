@@ -61,7 +61,7 @@ class Button extends Component {
       outputRange: [10, 5]
     });
 
-
+    console.log(typeof this.props.children);
     return (
       <TouchableWithoutFeedback
         onPress={this.props.onPress}

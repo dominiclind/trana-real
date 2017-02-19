@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from 'react-native';
 
 import {distanceInWords} from 'date-fns'
@@ -41,6 +42,7 @@ class FeedListItem extends Component {
     } = workout;
 
     return (
+      <TouchableOpacity onPress={this.props.onPress}>
       <View style={ styles.component }>
         <Paragraph style={styles.mood}>{mood}</Paragraph>
         
@@ -54,6 +56,7 @@ class FeedListItem extends Component {
 
         <FavoriteStar id={id} favorite={favorite}/>
       </View>
+      </TouchableOpacity>
     )
   }
 }

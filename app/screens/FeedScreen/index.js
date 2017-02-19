@@ -4,8 +4,11 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native';
+
+import Modal from 'react-native-modalbox';
 
 import Firebase from 'app/stores/Firebase';
 import WorkoutStore from 'app/stores/Workout';
@@ -13,17 +16,10 @@ import Paragraph from 'app/components/Paragraph';
 import Me from 'app/components/Me';
 import Button from 'app/components/Button';
 import FeedListItem from 'app/components/FeedListItem';
+import WorkoutInfoModalContent from 'app/components/WorkoutInfoModalContent';
 import sort from 'app/utils/sort';
 import {getExercisesForWorkout} from 'app/utils/workout';
-
-const weekday = [];
-weekday[0] = "Sunday";
-weekday[1] = "Monday";
-weekday[2] = "Tuesday";
-weekday[3] = "Wednesday";
-weekday[4] = "Thursday";
-weekday[5] = "Friday";
-weekday[6] = "Saturday";
+import {getDay} from 'app/utils/time';
 
 @observer
 class FeedScreen extends Component {
@@ -33,7 +29,8 @@ class FeedScreen extends Component {
 
     this.state = {
       loaded : false,
-      feed: []
+      feed: [],
+      workoutPreviewModal: false
     }
   }
 
@@ -44,7 +41,7 @@ class FeedScreen extends Component {
       Firebase.getFavoriteWorkouts()
     ]).then(response => {
       this.setState({
-        feed: response[0],
+        feed: response[0].reverse(),
         exercises: response[1],
         favorites: response[2],
         loaded: true
@@ -54,12 +51,11 @@ class FeedScreen extends Component {
 
   renderItemByDay() {
     const { feed } = this.state;
-
     if (feed.byday) {
       return Object.keys(feed.byday).map((key) => {
         return (
           <View key={key}>
-            <Paragraph>{weekday[new Date(key).getDay()]}</Paragraph>
+            <Paragraph>{getDay(new Date(key).getDay())}</Paragraph>
           </View>
         )
       });
@@ -70,9 +66,10 @@ class FeedScreen extends Component {
   renderItem() {
     const { feed, exercises, favorites } = this.state;
     if (feed) {
-      return feed.reverse().map((item,i) => {
+      return feed.map((item,i) => {
         return (
           <FeedListItem
+            onPress={() => this.setState({workoutPreviewModal: true, workout: item })}
             key={i} 
             id={item.id}
             favorite={favorites.indexOf(item.id) > -1}
@@ -85,6 +82,29 @@ class FeedScreen extends Component {
       return null;
     }
   }
+  renderWorkoutInfoModal() {
+    const { workout = false, exercises } = this.state;
+    return (
+      <Modal
+        position="bottom"
+        style={styles.modal}
+        isOpen={this.state.workoutPreviewModal}
+        onClosed={() => this.setState({workoutPreviewModal: false})}
+        >
+          <View style={styles.modalContent}>
+            {workout ? 
+              <WorkoutInfoModalContent
+                workout={workout}
+                exercises={getExercisesForWorkout(workout.value.exercises, exercises)}
+              />
+            : null}
+            <Button bg="pink" color="black" onPress={() => this.setState({ workoutPreviewModal: false }) }>
+              close
+            </Button>
+          </View>
+      </Modal>
+    )
+  }
   render() {
     const { user } = Firebase;
     const { feed, loaded } = this.state;
@@ -94,6 +114,7 @@ class FeedScreen extends Component {
       <View style={styles.screen}>
         <Me user={user} />
         <View style={styles.feed}>
+          <Paragraph weight="bold" style={{textAlign:'center', fontSize: 12, color:'rgba(0,0,0,.3)'}}>MY WORKOUTS</Paragraph>
           <ScrollView>
             {!loaded ? <ActivityIndicator /> : null}
             {this.renderItem()}
@@ -108,11 +129,13 @@ class FeedScreen extends Component {
           </Button>
           ) : null}
         </View>
+        {this.renderWorkoutInfoModal()}
       </View>
     )
   }
 }
 
+const { height:vh } = Dimensions.get('window');
 
 // styles
 const styles = StyleSheet.create({
@@ -136,6 +159,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
     alignItems: 'center'
+  },
+  modal: {
+    //:'transparent',
+    position: 'relative',
+    //top: 20,
+    backgroundColor: 'transparent',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    flex: 1,
+    padding: 20,
   }
 });
 

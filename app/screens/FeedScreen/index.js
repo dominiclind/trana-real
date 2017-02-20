@@ -19,6 +19,7 @@ import FeedListItem from 'app/components/FeedListItem';
 import WorkoutInfoModalContent from 'app/components/WorkoutInfoModalContent';
 import sort from 'app/utils/sort';
 import {getExercisesForWorkout} from 'app/utils/workout';
+import {getBodybuildingExercises} from 'app/utils/api';
 import {getDay} from 'app/utils/time';
 
 @observer
@@ -37,7 +38,7 @@ class FeedScreen extends Component {
   componentDidMount() {
     Promise.all([
       Firebase.getMyFeed(),
-      Firebase.getExercises(),
+      getBodybuildingExercises(),
       Firebase.getFavoriteWorkouts()
     ]).then(response => {
       this.setState({

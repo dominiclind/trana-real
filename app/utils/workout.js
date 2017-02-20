@@ -6,7 +6,7 @@ const getExercisesForWorkout = (workout = [], all = []) => {
 				if (exercise.id == e.id) {
 					arr.push({
 						sets : exercise.sets,
-						...e.value
+						...e
 					});
 				}
 			});
@@ -15,6 +15,33 @@ const getExercisesForWorkout = (workout = [], all = []) => {
 	return arr;
 };
 
+
+const getNormalizedBodyPart = (muscle = '') => {
+	const legs = ['quadriceps', 'calves', 'glutes', 'hamstrings'];
+	const arms = ['biceps', 'forearms', 'triceps'];
+	const chest = ['chest'];
+	const back = ['lats','middle back','lower back'];
+	const shoulders = ['shoulders'];
+	const abs = ['abdominals'];
+
+	if (legs.indexOf(muscle.toLowerCase()) > -1) {
+		return 'Legs'
+	} else if(arms.indexOf(muscle.toLowerCase()) > -1){
+		return 'Arms'
+	} else if(chest.indexOf(muscle.toLowerCase()) > -1){
+		return 'Chest'
+	}	else if(back.indexOf(muscle.toLowerCase()) > -1){
+		return 'Back'
+	} else if(shoulders.indexOf(muscle.toLowerCase()) > -1){
+		return 'Shoulders'
+	} else if(abs.indexOf(muscle.toLowerCase()) > -1){
+		return 'Abs'
+	};
+
+	return muscle;
+}
+
 export {
+	getNormalizedBodyPart,
 	getExercisesForWorkout
 };

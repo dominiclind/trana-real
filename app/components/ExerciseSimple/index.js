@@ -49,11 +49,9 @@ class ExerciseSimple extends Component {
 
   render() {
     const { fullscreen, exercise } = this.props;
-    const { id, value } = exercise;
-    
-    return (
+        return (
       <View style={ styles.component }>
-        <Header>{value.name}</Header>
+        <Header style={styles.header}>{exercise.name}</Header>
 
         <Icon
           style={styles.close}
@@ -153,6 +151,12 @@ const styles = StyleSheet.create({
     marginTop: 18,
     padding: 0,
     backgroundColor: 'red'
+  },
+  header: {
+    fontSize: 18,
+    marginTop: 7,
+    marginBottom: 20,
+    marginHorizontal: 50
   },
   setItem: {
     flexDirection: 'row',

@@ -51,7 +51,7 @@ class Workout {
   @action deleteExercise(exercise){
     let foundIndex = false;
     this.exercises.map((e, index) => {
-      if (e.value.name == exercise.value.name) {
+      if (e.id == exercise.id) {
         foundIndex = index;
       }
     });
@@ -69,7 +69,7 @@ class Workout {
     });
 
     this.exercises.map(e => {
-      if (e.value.name == exercise.value.name) {
+      if (e.name == exercise.name) {
         e.sets = sets;
       }
     });
@@ -82,7 +82,7 @@ class Workout {
     //this.totalSets++;
 
     this.exercises.map(e => {
-      if (e.id.name == exercise.id) {
+      if (e.id == exercise.id) {
         // add weight & reps and 
         // mark as done
         const saveSet = {

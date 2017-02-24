@@ -1,3 +1,6 @@
+const onlyUnique = (value, index, self) => self.indexOf(value) === index;
+
+
 const getExercisesForWorkout = (workout = [], all = []) => {
 	const arr = [];
 	workout.forEach(exercise => {
@@ -41,7 +44,21 @@ const getNormalizedBodyPart = (muscle = '') => {
 	return muscle;
 }
 
+const getBodypartsWorked = (exercises) => {
+	const arrOfBodyParts = [];
+
+	exercises.reverse().forEach(e => {
+		arrOfBodyParts.push(getNormalizedBodyPart(e['Main Muscle Worked'].trim()));
+	});
+
+	const uniqueArray = arrOfBodyParts.filter(onlyUnique);
+
+	return uniqueArray.slice() + '';
+
+}
+
 export {
+	getBodypartsWorked,
 	getNormalizedBodyPart,
 	getExercisesForWorkout
 };

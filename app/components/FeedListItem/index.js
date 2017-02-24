@@ -12,6 +12,8 @@ import {distanceInWords} from 'date-fns'
 import Paragraph from 'app/components/Paragraph';
 import FavoriteStar from 'app/components/FavoriteStar';
 
+import {getBodypartsWorked} from 'app/utils/workout';
+
 class FeedListItem extends Component {
 
   constructor(props) {
@@ -48,12 +50,15 @@ class FeedListItem extends Component {
         
         <View style={styles.content}>
           <View style={styles.header}>
-            <Paragraph weight="bold" style={styles.feedHeading}>WORKOUT</Paragraph>
-            <Paragraph weight="bold" style={styles.feedDate}>{this._getTimeOfDay(workout.endDate).toUpperCase()} AGO</Paragraph>
+            <Paragraph weight="bold" style={styles.feedHeading}>
+              {getBodypartsWorked(exercises).toUpperCase() + ' WORKOUT'}
+            </Paragraph>
+            <Paragraph weight="bold" style={styles.feedDate}>
+              {this._getTimeOfDay(workout.endDate).toUpperCase()} AGO
+            </Paragraph>
           </View>
           <Paragraph style={styles.exercises}>{this._renderExercises(exercises)}</Paragraph>
         </View>
-
         <FavoriteStar id={id} favorite={favorite}/>
       </View>
       </TouchableOpacity>

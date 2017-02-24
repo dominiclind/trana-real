@@ -9,6 +9,7 @@ import {
 
 import Header from 'app/components/Header';
 import Paragraph from 'app/components/Paragraph';
+import {getBodypartsWorked} from 'app/utils/workout';
 
 
 class WorkoutInfoModalContent extends Component {
@@ -24,11 +25,9 @@ class WorkoutInfoModalContent extends Component {
     const { workout:workoutObject, exercises } = this.props;
     const { id, value:workout } = workoutObject;
 
-    console.log(exercises);
-
     return (
       <View style={ styles.component }>
-        <Header style={{fontSize: 22, marginBottom: 30}}>Workout Summary</Header>
+        <Header style={{fontSize: 22, marginBottom: 30}}>{getBodypartsWorked(exercises) + ' WORKOUT'}</Header>
         {exercises.reverse().map((exercise, i) => {
           let sets = [];
           if (exercise.sets) {

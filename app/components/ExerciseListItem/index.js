@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Actions } from 'react-native-router-flux';
 
 import {
   View,
@@ -7,8 +8,11 @@ import {
   StyleSheet
 } from 'react-native';
 
+
+
 import Paragraph from 'app/components/Paragraph';
 import {getNormalizedBodyPart} from 'app/utils/workout';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class ExerciseListItem extends Component {
 
@@ -25,12 +29,16 @@ class ExerciseListItem extends Component {
     const bodyPart = getNormalizedBodyPart(exercise['Main Muscle Worked'].trim());
 
     return (
-      <TouchableOpacity key={exercise.name} onPress={this.props.onAdd}>
-        <View style={styles.listItem} >
-          <Paragraph weight="bold" style={styles.exerciseName}>{exercise.name.toUpperCase()}</Paragraph>
-          <View style={{flexDirection: 'row'}}>
-            <Paragraph weight="bold" style={styles.tag}>{bodyPart.toUpperCase()}</Paragraph>
+      <TouchableOpacity key={exercise.name}>
+        <View style={styles.listItem}>
+          <Icon style={styles.icon} name="add" onPress={() => this.props.onAdd()} />
+          <View style={{flex: 1, paddingHorizontal: 10}}>
+            <Paragraph weight="bold" style={styles.exerciseName}>{exercise.name.toUpperCase()}</Paragraph>
+            <View style={{flexDirection: 'row'}}>
+              <Paragraph weight="bold" style={styles.tag}>{bodyPart.toUpperCase()}</Paragraph>
+            </View>
           </View>
+          <Icon style={styles.icon} name="info-outline" onPress={() => Actions.exercise({exercise})} />
         </View>
       </TouchableOpacity>
     )
@@ -41,13 +49,17 @@ class ExerciseListItem extends Component {
 // styles
 const styles = StyleSheet.create({
   listItem: {
-    justifyContent: 'center',
+    // justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 20,
     paddingHorizontal: 15,
     backgroundColor: 'transparent',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    flexDirection: 'row'
   },
   exerciseName: {
+    fontSize: 16,
     marginBottom: 5
   },
   tag: {
@@ -57,6 +69,10 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     paddingHorizontal: 10,
     paddingVertical: 5
+  },
+  icon: {
+    fontSize: 30,
+    backgroundColor: 'transparent'
   }
 });
 

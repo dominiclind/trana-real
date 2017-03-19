@@ -10,6 +10,7 @@ import { Actions } from 'react-native-router-flux';
 import store from 'react-native-simple-store';
 import NavStore from 'app/stores/Nav';
 import Firebase from 'app/stores/Firebase';
+import { pushOnWorkoutEnd } from 'app/utils/api';
 
 class Workout {
   @observable startDate = false;
@@ -147,9 +148,13 @@ class Workout {
     }
     this.exercises = [];
     this.startDate = false;
-    Firebase.saveWorkout(workoutToSend);
-    // NavStore.goTo('feed');
 
+    // send push to all (friends)
+    pushOnWorkoutEnd(Firebase.user, workoutToSend);
+
+    // save workout to firebase
+    Firebase.saveWorkout(workoutToSend);
+    
     store.delete('exercises');
     store.delete('startDate');
     Actions.feed()

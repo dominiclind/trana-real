@@ -48,12 +48,15 @@ class Firebase {
     console.log(msg);
   }
   @action checkLogin() {
+    console.log('listen for auth');
     this.firestack.auth.listenForAuth((evt) => {
       // evt is the authentication event
+
       if (!evt.authenticated) {
         // There was an error or there is no user
         // console.error(evt.error);
         // NavStore.goTo('login');
+        Actions.login();
       } else {
         // evt.user contains the user details
         this.user = evt.user;
@@ -66,7 +69,7 @@ class Firebase {
   @action login(token) {
     this.firestack.auth.signInWithProvider('facebook', token, '')
     .then((user)=>{
-      console.log(user)
+      console.log(user);
     })
   }
   @action saveWorkout(workout) {

@@ -16,7 +16,7 @@ String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
 
-import { getExercises, addNewExercise, getBodybuildingExercises } from 'app/utils/api';
+import { getExercises, getBodybuildingExercises } from 'app/utils/api';
 
 import WorkoutStore from 'app/stores/Workout';
 import Paragraph from 'app/components/Paragraph';

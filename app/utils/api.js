@@ -1,59 +1,12 @@
-const EXERCISES = [
-  {
-    name : 'Deadlift'
-  },
-  {
-    name : 'Thrusters'
-  },
-  {
-    name : 'Lunges'
-  },
-  {
-    name : 'Squat'
-  },
-  {
-    name : 'Burpees'
-  },
-  {
-    name : 'Chins'
-  },
-  {
-    name : 'Bench Press'
-  },
-  {
-    name : 'Dips'
-  },
-  {
-    name : 'Bent over row'
-  },
-  {
-    name : 'Squat Cleans'
-  },
-  {
-    name : 'Kettlebell Swings'
-  },
-  {
-    name : 'Military Press'
-  },
-  {
-    name : 'Russian Twist'
-  },
-  {
-    name : 'Crunches'
-  }
-];
-
 import Immutable from 'immutable';
 import axios from 'axios';
+import Config from 'react-native-config'
+
 
 const exercises = require('../../data/exercises.json');
 
-const getExercises = () => {
-	return EXERCISES
-}
-
 const getBodybuildingExercises = () => new Promise((resolve,reject) => {
-  axios.get('http://workout.doli.cloud/api/exercises').then(response => {
+  axios.get(`${Config.API_URL}/exercises`).then(response => {
     if (response.status == 200) {
       const { data } = response;
       const exercises = data.workouts;
@@ -61,25 +14,11 @@ const getBodybuildingExercises = () => new Promise((resolve,reject) => {
     } else {
       reject([]);
     }
-  })
-  // const fixedList = Object.keys(exercises).map(i => {
-  //   const name = Object.keys(exercises[i])[0];
-  //   const e = exercises[i][name];
-
-  //   return {
-  //     ...e,
-  //     Name: name,
-  //     id : Number(i)
-  //   };
-  // })
-
-  // return fixedList;
+  });
 });
 
 const getAllExercises = () => new Promise((resolve, reject) => {
-
   const allToReturn = {};
-
   Promise.all([getBodybuildingExercises()]).then((combined) => {
     const all = {};
 
@@ -93,17 +32,23 @@ const getAllExercises = () => new Promise((resolve, reject) => {
       'All Exercises': all,
     }));
   });
+});
 
+const pushOnWorkoutEnd = (user,workout) => new Promise((resolve, reject) => {
+  console.log('pushOnWorkoutEnd');
+  console.log(user, workout);
+
+  axios.post(`${Config.API_URL}/push/endworkout`, { user,workout })
+  .then(response => {
+    console.log(response);
+  });
 
 });
 
-const addNewExercise = (exercise) => {
-  console.log('add ', exercise);
-}
+
 
 export {
   getAllExercises,
   getBodybuildingExercises,
-	getExercises,
-  addNewExercise
+  pushOnWorkoutEnd
 };

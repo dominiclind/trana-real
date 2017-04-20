@@ -67,7 +67,9 @@ class WorkoutScreen extends Component {
       exercises,
       amountOfExercises,
       numberOfSets,
-      totalSets
+      totalSets,
+      amountOfEquipmentFilters,
+      amountOfBodypartFilters
     } = WorkoutStore;  
     return (
       <View

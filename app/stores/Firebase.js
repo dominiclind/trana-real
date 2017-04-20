@@ -36,12 +36,6 @@ class Firebase {
     // place reactions and autoruns here.
     this.firestack = new Firestack(configurationOptions);
     this.firestack.on('debug', msg => this.debugLog(msg));
-
-    store.get('user').then(user => {
-      if (user) {
-        this.user = user;
-      }
-    });
   }
 
   @action debugLog(msg) {
@@ -51,7 +45,6 @@ class Firebase {
     console.log('listen for auth');
     this.firestack.auth.listenForAuth((evt) => {
       // evt is the authentication event
-
       if (!evt.authenticated) {
         // There was an error or there is no user
         // console.error(evt.error);
@@ -60,7 +53,7 @@ class Firebase {
       } else {
         // evt.user contains the user details
         this.user = evt.user;
-        store.save('user', evt.user);
+        // store.save('user', evt.user);
         Actions.feed();
       }
     })
@@ -71,6 +64,9 @@ class Firebase {
     .then((user)=>{
       console.log(user);
     })
+  }
+  @action logout() {
+    this.firestack.auth.signOut()
   }
   @action saveWorkout(workout) {
     const { uid } = this.user;

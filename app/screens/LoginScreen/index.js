@@ -3,7 +3,8 @@ import { observer } from 'mobx-react/native';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  ActivityIndicator
 } from 'react-native';
 
 import SocialAuth from 'react-native-social-auth';
@@ -16,6 +17,10 @@ class Login extends Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      loading : false
+    }
   }
 
   componentDidMount() {
@@ -23,12 +28,12 @@ class Login extends Component {
   }
 
   _login() {
+    this.setState({loading : true});
     SocialAuth.getFacebookCredentials(["email", "user_friends"], SocialAuth.facebookPermissionsType.read)
     .then((credentials) => {
       const token = credentials.accessToken;
       FirebaseStore.login(token);
-      NavStore.goTo('feed');
-
+      // NavStore.goTo('feed');
     })
     .catch((error) => console.log(error))
   }
@@ -36,7 +41,11 @@ class Login extends Component {
   render() {
     return (
       <View style={styles.screen}>
-        <Button onPress={() => this._login() }>connect with facebook</Button>
+        {this.state.loading ? (
+          <ActivityIndicator size="large" />  
+        ) : (
+          <Button onPress={() => this._login() }>connect with facebook</Button>
+        )}
       </View>
     )
   }

@@ -17,9 +17,19 @@ class Workout {
   @observable exercises = [];
   @observable totalSets = 0;
   @observable rehydrated = false;
+  @observable filters = {
+    bodyparts: [],
+    equipment: []
+  };
 
   @computed get amountOfExercises () {
     return this.exercises.length;
+  }
+  @computed get amountOfBodypartFilters () {
+    return this.filters.bodyparts.length;
+  }
+  @computed get amountOfEquipmentFilters () {
+    return this.filters.equipment.length;
   }
 
   constructor() {

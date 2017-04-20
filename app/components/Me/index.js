@@ -30,10 +30,11 @@ class Me extends Component {
     const { user } = this.props;
     return (
       <View style={ styles.component }>
-        <TouchableOpacity onPress={this.onButtonPress}>
-          <Image style={styles.avatar} source={{uri: user.photoURL }}/>
-        </TouchableOpacity >
+        <Image style={styles.avatar} source={{uri: user.photoURL }}/>
         <Paragraph style={{color:'black'}}>{user.displayName}</Paragraph>
+        <TouchableOpacity style={styles.logoutBtn} onPress={this.props.onLogout}>
+          <Paragraph style={styles.logout}>LOGOUT</Paragraph>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -44,13 +45,26 @@ class Me extends Component {
 const styles = StyleSheet.create({
   component : {
     backgroundColor:'transparent',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 40,
+    position: 'relative'
   },
   avatar: {
     height: 70,
     width: 70,
     borderRadius: 35,
     marginBottom: 10
+  },
+  logoutBtn: {
+    position: 'absolute',
+    top: 30,
+    right: 20
+  },
+  logout: {
+    textDecorationLine: 'underline',
+    textDecorationColor: 'black',
+    fontWeight: '800',
+    fontSize: 12,
   }
 });
 

@@ -8,6 +8,7 @@ import LoginScreen from 'app/screens/LoginScreen';
 import InitialScreen from 'app/screens/InitialScreen';
 import FeedScreen from 'app/screens/FeedScreen';
 import ExerciseScreen from 'app/screens/ExerciseScreen';
+import KitchenSink from 'app/screens/KitchenSink';
 
 
 export default class Routes extends Component {
@@ -17,17 +18,31 @@ export default class Routes extends Component {
         hideNavBar={true}
       >
         <Scene key="root">
+            <Scene
+                key="initial"
+                component={KitchenSink}
+                title="Initial"
+                direction="vertical"
+                panHandlers={null}
+                animationStyle={modalSlide}
+            />
+            { /*}
         	<Scene
         		key="initial"
         		component={InitialScreen}
         		title="Initial"
-        		type="replace"
+                direction="vertical"
+                panHandlers={null}
+                animationStyle={modalSlide}
         	/>
+            {*/}
         	<Scene
         		key="login"
         		component={LoginScreen}
         		title="Login"
-        		type="replace"
+        		direction="vertical"
+                panHandlers={null}
+                animationStyle={modalSlide}
         	/>
         	<Scene
         		key="feed"

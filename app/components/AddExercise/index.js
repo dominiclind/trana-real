@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   ActivityIndicator
 } from 'react-native';
 
@@ -16,12 +17,16 @@ String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
 
+import {byNonChosen, byName, byBodypart} from 'app/utils/filter';
+
 import { getExercises, getBodybuildingExercises } from 'app/utils/api';
 
 import WorkoutStore from 'app/stores/Workout';
 import Paragraph from 'app/components/Paragraph';
 import Button from 'app/components/Button';
 import ExerciseListItem from 'app/components/ExerciseListItem';
+import FilterList from 'app/components/FilterList';
+import StyledText from 'app/components/StyledText';
 
 import Firebase from 'app/stores/Firebase';
 
@@ -34,7 +39,8 @@ class AddExercise extends Component {
     super(props)
 
     this.state = {
-      search : ''
+      search : '',
+      filter: false
     };
   }
 
@@ -43,18 +49,9 @@ class AddExercise extends Component {
       this.setState({exercises});
     });
   }
-  // addNewExercise() {
-  //   const { search } = this.state;
-    
-  //   // have to get key from firebase, then save workout
-  //   WorkoutStore.addExercise({name: search.trim().toProperCase()})
-  //   Firebase.saveExercise({name: search.trim().toProperCase()});
-    
-  //   this.setState({search: ''});
-  // }
+
   addExercise(exercise) {
     WorkoutStore.addExercise(exercise);
-
     this.setState({search: ''});
   }
   _filter(exercises){
@@ -65,14 +62,11 @@ class AddExercise extends Component {
 
     let found = [];
     if (search.length > SEARCH_LENGTH) {
-      found = exercises.filter(exercise => {
-        // const e = exercise;
-        if (exercise.name.toLowerCase().indexOf(search.toLowerCase()) > -1 &&
-            chosen.indexOf(exercise.name.toLowerCase()) == -1
-          ){
-          return exercise;
-        }
-      });
+      found = byNonChosen(exercises, chosen);
+      found = byName(found, search);
+      if(WorkoutStore.filters.bodyparts.length){
+        found = byBodypart(found, WorkoutStore.filters.bodyparts.toJS())
+      }
     }
 
     const all = {};
@@ -111,18 +105,33 @@ class AddExercise extends Component {
 
     return (
       <View style={ styles.component }>
-        <View style={styles.searchInput}>
-          <Icon name="md-search" style={styles.searchIcon}/>
-          <TextInput
-            value={this.state.search}
-            onChangeText={(text) => this.setState({search: text})}
-            autoCapitalize="characters"
-            autoCorrect={false}
-            placeholderTextColor="rgba(255,255,255,.4)"
-            placeholder={`Type at least ${SEARCH_LENGTH+1} characters`}
-            style={styles.input}
-          />
+        <View style={styles.inputWrap}>
+          <View style={styles.searchInput}>
+            <Icon name="md-search" style={styles.searchIcon}/>
+            <TextInput
+              value={this.state.search}
+              onChangeText={(text) => this.setState({search: text})}
+              autoCapitalize="characters"
+              autoCorrect={false}
+              placeholderTextColor="rgba(255,255,255,.4)"
+              placeholder={`Type at least ${SEARCH_LENGTH+1} characters`}
+              style={styles.input}
+            />
+            <TouchableWithoutFeedback onPress={() => this.setState({showFilter: !this.state.showFilter})}>
+              <View>
+                <Icon style={[styles.searchIcon, styles.filterBtn]} name="md-more"/>
+                {WorkoutStore.amountOfBodypartFilters ? (
+                  <StyledText weight="bold" style={[styles.filterCount]}>{WorkoutStore.amountOfBodypartFilters}</StyledText>
+                ) : null}
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          {this.state.showFilter ? (
+            <FilterList filters={WorkoutStore.filters} />
+          ): null}
+       
         </View>
+
         {exercises ? (
           <ImmutableListView
             immutableData={this._filter(exercises)}
@@ -132,7 +141,7 @@ class AddExercise extends Component {
         ) : <View style={{flex:1, justifyContent: 'center'}}><ActivityIndicator /></View> }
         <ScrollView
           keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps="never"
         >
         </ScrollView>
       </View>
@@ -159,6 +168,14 @@ const styles = StyleSheet.create({
     color: 'white',
     marginHorizontal: 20
   },
+  filterBtn: {
+    color:'white',
+    width: 40,
+    marginHorizontal:10,
+    alignItems: 'center',
+    textAlign: 'center',
+    backgroundColor: 'transparent'
+  },
   input: {
     fontSize: 18,
     fontFamily: 'Circular-bold',
@@ -166,6 +183,21 @@ const styles = StyleSheet.create({
     color: 'white',
     flex: 1,
     paddingHorizontal: 0,
+  },
+  filterCount: {
+    width: 20,
+    height: 20,
+    backgroundColor: 'white',
+    color: 'black',
+    borderColor: 'black',
+    borderWidth: 2,
+    fontSize: 13,
+    textAlign: 'center',
+    justifyContent: 'center',
+    lineHeight: 20,
+    position:'absolute',
+    top:-2,
+    right:9
   },
   sectionHeader: {
     marginBottom: 0,

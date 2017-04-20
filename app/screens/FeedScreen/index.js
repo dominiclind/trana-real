@@ -113,7 +113,7 @@ class FeedScreen extends Component {
 
     return (
       <View style={styles.screen}>
-        <Me user={user} />
+        <Me user={user} onLogout={() => Firebase.logout()}/>
         <View style={styles.feed}>
           <Paragraph weight="bold" style={{textAlign:'center', fontSize: 12, color:'rgba(0,0,0,.3)'}}>MY WORKOUTS</Paragraph>
           <ScrollView>
@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
   screen : {
     backgroundColor: 'white',
     flex: 1,
-    paddingTop: 50
   },
   screenHeader: {
     fontSize: 50,

@@ -21,33 +21,6 @@ import NavStore from 'app/stores/Nav';
 @codePush(codePushOptions) @observer
 class Root extends Component {
 
-	// renderView() {
-	// 	const { current } = NavStore;
-	// 	const { user = {} } = Firebase;
-
-		
-	// 	// return <KitchenSink/>
-	// 	if (!user.uid) {
-	// 		return <LoginScreen />
-	// 	} else {
-	// 		switch(current){
-	// 			case 'login':
-	// 				return <LoginScreen />
-	// 			break;
-	// 			case 'workout':
-	// 				return <WorkoutScreen />
-	// 			break;
-	// 			case 'workoutlist':
-	// 				return <WorkoutList />
-	// 			case 'feed':
-	// 				return <FeedScreen />
-	// 			break;
-	// 			default: 
-	// 				return <FeedScreen/>
-	// 			break;
-	// 		}
-	// 	}
-	// }
 	componentDidMount() {
 		// Calling registerForPushNotifications
 		OneSignal.registerForPushNotifications();

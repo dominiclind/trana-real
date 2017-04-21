@@ -1,0 +1,6 @@
+framework module Pods_circuit2 {
+  umbrella header "Pods-circuit2-umbrella.h"
+
+  export *
+  module * { export * }
+}

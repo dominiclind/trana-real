@@ -8,6 +8,10 @@
  */
 
 #import "AppDelegate.h"
+#import <RNCrashes/RNCrashes.h>
+
+#import <RNAnalytics/RNAnalytics.h>
+
 #import <CodePush/CodePush.h>
 #import "RNSocialAuthManager.h"
 #import <React/RCTBundleURLProvider.h>
@@ -33,6 +37,10 @@
   
   
   NSURL *jsCodeLocation;
+
+  [RNCrashes registerWithCrashDelegate: [[RNCrashesDelegateAlwaysSend alloc] init]];  // Initialize Mobile Center crashes
+
+  [RNAnalytics registerWithInitiallyEnabled:true];  // Initialize Mobile Center analytics
 
   
 #ifdef DEBUG

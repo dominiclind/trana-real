@@ -2834,6 +2834,30 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mobile-center-analytics@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/mobile-center-analytics/-/mobile-center-analytics-0.4.0.tgz#cee4174db9d812021c64c270172a22c297bc5e1c"
+  dependencies:
+    mobile-center-link-scripts "0.1.6"
+
+mobile-center-crashes@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/mobile-center-crashes/-/mobile-center-crashes-0.4.0.tgz#3a91c117316929ec45c60306caa6886a131cfedf"
+  dependencies:
+    mobile-center-link-scripts "0.1.6"
+
+mobile-center-link-scripts@0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/mobile-center-link-scripts/-/mobile-center-link-scripts-0.1.6.tgz#b84d670945a99ebe42a0b9c99ba0c81ea38e8549"
+  dependencies:
+    debug "^2.2.0"
+    glob "^5.0.15"
+    inquirer "1.1.2"
+    mkdirp "^0.5.1"
+    plist "1.2.0"
+    which "^1.2.11"
+    xcode "^0.8.9"
+
 mobx-persist@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/mobx-persist/-/mobx-persist-0.2.1.tgz#f4abf32300bf0ccda94537dd9875a49609afd22b"
@@ -4392,7 +4416,7 @@ which-module@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-1.0.0.tgz#bba63ca861948994ff307736089e3b96026c2a4f"
 
-which@^1.2.9:
+which@^1.2.11, which@^1.2.9:
   version "1.2.12"
   resolved "https://registry.yarnpkg.com/which/-/which-1.2.12.tgz#de67b5e450269f194909ef23ece4ebe416fa1192"
   dependencies:

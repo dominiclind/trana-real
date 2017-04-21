@@ -45,22 +45,23 @@ class FeedListItem extends Component {
 
     return (
       <TouchableOpacity onPress={this.props.onPress}>
-      <View style={ styles.component }>
-        <Paragraph style={styles.mood}>{mood}</Paragraph>
-        
-        <View style={styles.content}>
-          <View style={styles.header}>
-            <Paragraph weight="bold" style={styles.feedHeading}>
-              {getBodypartsWorked(exercises).toUpperCase() + ' WORKOUT'}
-            </Paragraph>
-            <Paragraph weight="bold" style={styles.feedDate}>
-              {this._getTimeOfDay(workout.endDate).toUpperCase()} AGO
-            </Paragraph>
+        <View style={ styles.component }>
+          <Paragraph style={styles.mood}>{mood}</Paragraph>
+          
+          <View style={styles.content}>
+            <View style={styles.header}>
+              <Paragraph weight="bold" style={styles.feedHeading}>
+                {getBodypartsWorked(exercises).toUpperCase() + ' WORKOUT'}
+              </Paragraph>
+              <Paragraph weight="bold" style={styles.feedDate}>
+                {this._getTimeOfDay(workout.endDate).toUpperCase()} AGO
+              </Paragraph>
+            </View>
+            <Paragraph style={styles.exercises}>{this._renderExercises(exercises)}</Paragraph>
           </View>
-          <Paragraph style={styles.exercises}>{this._renderExercises(exercises)}</Paragraph>
+          
+          <FavoriteStar id={id} favorite={favorite}/>
         </View>
-        <FavoriteStar id={id} favorite={favorite}/>
-      </View>
       </TouchableOpacity>
     )
   }

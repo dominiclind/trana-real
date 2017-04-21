@@ -12,6 +12,7 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import StyledText from 'app/components/StyledText';
 
 const HEADER_MAX_HEIGHT = 80;
 const HEADER_MIN_HEIGHT = 60;
@@ -48,7 +49,7 @@ class ParallaxHeader extends Component {
 
     const backButtonTop = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
-      outputRange: [30, 20],
+      outputRange: [30, 22],
       extrapolate: 'clamp',
     });
 
@@ -93,10 +94,6 @@ class ParallaxHeader extends Component {
               <Image style={styles.fakeChart} source={require('./chart.png')} />
             </View>
             {this.props.children}
-            {this.props.children}
-            {this.props.children}
-            {this.props.children}
-            {this.props.children}
           </View>
         </ScrollView>
         
@@ -106,7 +103,7 @@ class ParallaxHeader extends Component {
           
           <Animated.View style={[styles.bar, {height: barHeight}]}>
             <Animated.View style={[styles.titleGroup, {transform: [{scale}]}]}>
-              <Text style={styles.title}>{title}</Text>
+              <StyledText style={styles.title}>{title}</StyledText>
               {subtitle ? (<Animated.Text style={[styles.subtitle, {opacity: subtitleOpacity}]}>{subtitle}</Animated.Text>): null}
             </Animated.View>
           </Animated.View>
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
   },
   backIconButton: {
     position: 'absolute',
-    left: 0,
+    left: 5,
   },
   backImage: {
     backgroundColor: 'transparent',

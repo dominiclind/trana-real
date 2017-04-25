@@ -6,16 +6,12 @@ import {
   StyleSheet
 } from 'react-native';
 
-import FancyHeader from 'app/components/FancyHeader';
-import NumberPlate from 'app/components/NumberPlate';
-import WeightAndRepsInput from 'app/components/WeightAndRepsInput';
 import Button from 'app/components/Button';
 import Countdown from 'app/components/Countdown';
-import SetsIndicator from 'app/components/SetsIndicator';
 import Header from 'app/components/Header';
 import Paragraph from 'app/components/Paragraph';
 import ParallaxHeader from 'app/components/ParallaxHeader';
-import FeedListItem2 from 'app/components/FeedListItem2';
+import FeedListItem from 'app/components/FeedListItem';
 import ExerciseHistoryItem from 'app/components/ExerciseHistoryItem';
 
 @observer
@@ -30,15 +26,12 @@ class KitchenSink extends Component {
 
   render() {
     return (
-      <ParallaxHeader title="Shoulder Workout" subtitle="Friday 7/3 2017">
+      <ParallaxHeader title="Kitchen Sink" subtitle="Här finns massa komponenter!">
         <View style={{backgroundColor: 'silver'}}>
           <ExerciseHistoryItem sets={[1,2]}/>
+          <FeedListItem />
 
-          <ExerciseHistoryItem sets={[1,2,3,4,5]}/>
 
-          <ExerciseHistoryItem sets={[1,2,4]}/>
-
-          <ExerciseHistoryItem sets={[1,2,1,3]}/>
         </View>
         {/*}
         <FeedListItem2

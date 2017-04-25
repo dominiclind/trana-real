@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import codePush from "react-native-code-push";
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
+import { Provider } from 'react-redux';
 
 let codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
 
@@ -8,17 +9,12 @@ import {
   View,
   Text
 } from 'react-native';
-import { observer } from 'mobx-react/native';
 
-import TabBar from 'app/components/TabBar';
-import KitchenSink from 'app/screens/KitchenSink';
-import WorkoutList from 'app/screens/WorkoutList';
+import configureStore from './store/configureStore';
 import Routes from 'app/router';
 
-import Firebase from 'app/stores/Firebase';
-import NavStore from 'app/stores/Nav';
+const store = configureStore();
 
-@codePush(codePushOptions) @observer
 class Root extends Component {
 
 	componentDidMount() {
@@ -60,7 +56,9 @@ class Root extends Component {
 
   render () {
     return (
-    	<Routes />
+      <Provider store={store}>
+    	 <Routes />
+      </Provider>
     );
   }
 }

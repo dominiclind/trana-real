@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react/native';
 import {
   View,
   ActivityIndicator,
@@ -7,75 +6,46 @@ import {
   ScrollView,
   Dimensions
 } from 'react-native';
+import { connect } from 'react-redux';
 
-import Modal from 'react-native-modalbox';
+import { logout } from 'app/actions/auth';
+import { getFeed } from 'app/actions/feed';
+import { startWorkout } from 'app/actions/workout';
 
-import Firebase from 'app/stores/Firebase';
-import WorkoutStore from 'app/stores/Workout';
+import {warn, log} from 'app/utils/log';
+
 import Paragraph from 'app/components/Paragraph';
 import Me from 'app/components/Me';
 import Button from 'app/components/Button';
 import FeedListItem from 'app/components/FeedListItem';
-import WorkoutInfoModalContent from 'app/components/WorkoutInfoModalContent';
-import sort from 'app/utils/sort';
-import {getExercisesForWorkout} from 'app/utils/workout';
-import {getBodybuildingExercises} from 'app/utils/api';
-import {getDay} from 'app/utils/time';
 
-@observer
+import {getDay} from 'app/utils/time';
+import {getExercisesForWorkout} from 'app/utils/workout';
+
 class FeedScreen extends Component {
 
   constructor(props) {
     super(props)
-
-    this.state = {
-      loaded : false,
-      feed: [],
-      workoutPreviewModal: false
-    }
   }
 
   componentDidMount() {
-    Promise.all([
-      Firebase.getMyFeed(),
-      getBodybuildingExercises(),
-      Firebase.getFavoriteWorkouts()
-    ]).then(response => {
-      this.setState({
-        feed: response[0].reverse(),
-        exercises: response[1],
-        favorites: response[2],
-        loaded: true
-      });
-    });
+    const { dispatch } = this.props;
+
+    dispatch(getFeed());
   }
 
-  renderItemByDay() {
-    const { feed } = this.state;
-    if (feed.byday) {
-      return Object.keys(feed.byday).map((key) => {
-        return (
-          <View key={key}>
-            <Paragraph>{getDay(new Date(key).getDay())}</Paragraph>
-          </View>
-        )
-      });
-    } else {
-      return null;
-    }
-  }
-  renderItem() {
-    const { feed, exercises, favorites } = this.state;
+  _renderItem() {
+    const { feed:feedReducer, auth } = this.props;
+    const { feed } = feedReducer;
+
     if (feed) {
       return feed.map((item,i) => {
+        const workout = item.value;
         return (
           <FeedListItem
-            onPress={() => this.setState({workoutPreviewModal: true, workout: item })}
-            key={i} 
-            id={item.id}
-            favorite={favorites.indexOf(item.id) > -1}
-            workout={item.value}
-            exercises={getExercisesForWorkout(item.value.exercises, exercises)}
+            key={i}
+            name={auth.user.displayName}
+            avatar={auth.user.photoURL}
           />
         )
       });
@@ -83,54 +53,46 @@ class FeedScreen extends Component {
       return null;
     }
   }
-  renderWorkoutInfoModal() {
-    const { workout = false, exercises } = this.state;
-    return (
-      <Modal
-        position="bottom"
-        style={styles.modal}
-        isOpen={this.state.workoutPreviewModal}
-        onClosed={() => this.setState({workoutPreviewModal: false})}
-        >
-          <View style={styles.modalContent}>
-            {workout ? 
-              <WorkoutInfoModalContent
-                workout={workout}
-                exercises={getExercisesForWorkout(workout.value.exercises, exercises)}
-              />
-            : null}
-            <Button bg="pink" color="black" onPress={() => this.setState({ workoutPreviewModal: false }) }>
-              close
-            </Button>
-          </View>
-      </Modal>
-    )
+
+  _logout() {
+    const { dispatch } = this.props;
+    dispatch(logout());
   }
+
+  _startWorkout() {
+    const { dispatch } = this.props;
+    dispatch(startWorkout());
+  }
+
   render() {
-    const { user } = Firebase;
-    const { feed, loaded } = this.state;
-    const { startDate, rehydrated } = WorkoutStore;
+    const { feed:feedReducer, auth } = this.props;
+    const { user } = auth;
+    const { loading, feed } = feedReducer;
+
+    log(feed);
 
     return (
       <View style={styles.screen}>
-        <Me user={user} onLogout={() => Firebase.logout()}/>
+        <Me user={user} onLogout={() => this._logout()}/>
+
         <View style={styles.feed}>
-          <Paragraph weight="bold" style={{textAlign:'center', fontSize: 12, color:'rgba(0,0,0,.3)'}}>MY WORKOUTS</Paragraph>
+          <Paragraph weight="bold"
+            style={{
+            textAlign:'center',
+            fontSize: 12,
+            color:'rgba(0,0,0,.3)'
+          }}>
+            MY WORKOUTS
+          </Paragraph>
           <ScrollView>
-            {!loaded ? <ActivityIndicator /> : null}
-            {this.renderItem()}
+            {loading ? <ActivityIndicator /> : null}
+            {this._renderItem()}
           </ScrollView>
         </View>
+        
         <View style={styles.bottomButtonWrap}>
-          {rehydrated ? (
-          <Button onPress={() => WorkoutStore.startWorkout()}>
-            {
-              startDate ? 'resume workout' : 'start workout'
-            }
-          </Button>
-          ) : null}
+          <Button onPress={() => this._startWorkout()}>Start Workout</Button>
         </View>
-        {this.renderWorkoutInfoModal()}
       </View>
     )
   }
@@ -174,4 +136,14 @@ const styles = StyleSheet.create({
 });
 
 
-export default FeedScreen
+// get relevant props from state
+function mapStateToProps(state) {
+  const { auth, feed } = state;
+
+  return {
+    auth,
+    feed
+  };
+}
+
+export default connect(mapStateToProps)(FeedScreen);

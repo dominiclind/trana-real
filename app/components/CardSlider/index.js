@@ -15,9 +15,7 @@ import Autocomplete from 'react-native-autocomplete-input';
 const { height, width } = Dimensions.get('window');
 
 import Header from 'app/components/Header';
-import AddExercise from 'app/components/AddExercise';
 import StyledText from 'app/components/StyledText';
-import ExerciseSimple from 'app/components/ExerciseSimple';
 import Button from 'app/components/Button';
 import WorkoutStore from 'app/stores/Workout';
 
@@ -50,17 +48,7 @@ class CardSlider extends Component {
       query: ''
     }
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if(nextProps.fullscreen !== this.props.fullscreen ||
-  //     nextState.offset !== this.state.offset ||
-  //     nextState.query !== this.state.query) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
+  
   componentDidUpdate(prevProps, prevState) {
     const { fullscreen = false } = this.props;
 
@@ -134,26 +122,7 @@ class CardSlider extends Component {
           showHorizontal
           showsHorizontalScrollIndicator={false}
         >
-        {content.map((exercise,index) => {
-          return (
-            <Animated.View 
-              key={index}
-              style={[
-                styles.card,
-                // rotateTransform(),
-                {
-                  // paddingHorizontal: animHorizontal,
-                  // paddingVertical: animVertical
-                }
-              ]}
-            >
-              <ExerciseSimple exercise={exercise} />
-            </Animated.View>
-          )
-        })}
-        <View style={styles.lastCard}>
-          <AddExercise />
-        </View>
+        {this.props.children}
         </Animated.ScrollView>
       </View>
     )
@@ -183,9 +152,6 @@ const styles = StyleSheet.create({
     overflow: 'visible',
     backgroundColor: 'transparent'
   },
-  card: {
-    width,
-  },
   listStyle: {
     borderWidth: 0,
     backgroundColor: 'white',
@@ -209,10 +175,6 @@ const styles = StyleSheet.create({
   },
   listItemText: {
     fontSize: 16,
-  },
-  lastCard: {
-    width,
-    paddingTop: 20
   },
 });
 

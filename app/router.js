@@ -18,6 +18,7 @@ export default class Routes extends Component {
         hideNavBar={true}
       >
         <Scene key="root">
+        { /*}
             <Scene
                 key="initial"
                 component={KitchenSink}
@@ -26,7 +27,8 @@ export default class Routes extends Component {
                 panHandlers={null}
                 animationStyle={modalSlide}
             />
-            { /*}
+                        {*/}
+            
         	<Scene
         		key="initial"
         		component={InitialScreen}
@@ -35,7 +37,7 @@ export default class Routes extends Component {
                 panHandlers={null}
                 animationStyle={modalSlide}
         	/>
-            {*/}
+
         	<Scene
         		key="login"
         		component={LoginScreen}

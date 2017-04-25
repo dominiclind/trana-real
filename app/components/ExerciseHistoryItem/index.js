@@ -77,16 +77,15 @@ const styles = StyleSheet.create({
   },
   set: {
     backgroundColor: '#343A40',
-    color: 'white',
     paddingHorizontal: 15,
     paddingVertical: 7,
     borderRadius:15,
     marginLeft: 15,
     marginVertical: 10,
-    textAlign:'center'
   },
   setText: {
-    color: 'white'
+    color: 'white',
+    textAlign:'center'
   }
   
 });

@@ -23,7 +23,7 @@ class ExerciseSimple extends Component {
 
     this.state = {
       currentSet: 0,
-      sets: props.exercise.sets
+      sets: props.exercise.sets || []
     }
   }
 

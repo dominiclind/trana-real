@@ -2,19 +2,23 @@ import Immutable from 'immutable';
 import axios from 'axios';
 import Config from 'react-native-config'
 
-
-const exercises = require('../../data/exercises.json');
+const cache = false;
 
 const getBodybuildingExercises = () => new Promise((resolve,reject) => {
-  axios.get(`${Config.API_URL}/exercises`).then(response => {
-    if (response.status == 200) {
-      const { data } = response;
-      const exercises = data.workouts;
-      resolve(exercises);
-    } else {
-      reject([]);
-    }
-  });
+  if(!cache){// 
+    axios.get(`${Config.API_URL}/exercises`).then(response => {
+      if (response.status == 200) {
+        const { data } = response;
+        const exercises = data.workouts;
+        // cache = exercise;
+        resolve(exercises);
+      } else {
+        reject([]);
+      }
+    });
+  } else {
+    // resolve(cache);
+  }
 });
 
 const getAllExercises = () => new Promise((resolve, reject) => {

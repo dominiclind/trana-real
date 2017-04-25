@@ -13,23 +13,8 @@ import StyledText from 'app/components/StyledText';
 
 class FilterList extends Component {
 
-  constructor(props) {
-    super(props)
-  }
-
-  componentDidMount() {
-  }
-
-  toggleFilter(bodypart) {
-    const { filters } = this.props;
-    const { bodyparts:filterbodyparts } = filters;
-
-    if(filterbodyparts.indexOf(bodypart) > -1){
-      filterbodyparts.splice(filterbodyparts.indexOf(bodypart), 1);
-    } else {
-      filterbodyparts.push(bodypart);
-    }
-
+  toggleBodypart(bodypart) {
+    this.props.toggleBodypart(bodypart);
   }
 
   render() {
@@ -41,7 +26,7 @@ class FilterList extends Component {
           {['legs', 'chest', 'back', 'arms', 'shoulders', 'abs'].map((bodypart, index) => {
           
             return (
-              <TouchableWithoutFeedback  key={index} onPress={() => this.toggleFilter(bodypart)}>
+              <TouchableWithoutFeedback  key={index} onPress={() => this.toggleBodypart(bodypart)}>
                 <View style={styles.col}>
                   <StyledText 
                     weight="bold"

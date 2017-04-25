@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react/native';
 import {
   View,
   Text,
   StyleSheet,
   ActivityIndicator
 } from 'react-native';
+import { connect } from 'react-redux';
+
+import { login } from 'app/actions/auth';
 
 import SocialAuth from 'react-native-social-auth';
 import Button from 'app/components/Button';
-import FirebaseStore from 'app/stores/Firebase';
-import NavStore from 'app/stores/Nav';
 
-@observer
 class Login extends Component {
 
   constructor(props) {
@@ -28,12 +27,13 @@ class Login extends Component {
   }
 
   _login() {
-    this.setState({loading : true});
+    const { dispatch } = this.props;
+    this.setState({loading: true});
+    
     SocialAuth.getFacebookCredentials(["email", "user_friends"], SocialAuth.facebookPermissionsType.read)
     .then((credentials) => {
       const token = credentials.accessToken;
-      FirebaseStore.login(token);
-      // NavStore.goTo('feed');
+      dispatch(login(token));
     })
     .catch((error) => console.log(error))
   }
@@ -41,11 +41,7 @@ class Login extends Component {
   render() {
     return (
       <View style={styles.screen}>
-        {this.state.loading ? (
-          <ActivityIndicator size="large" />  
-        ) : (
-          <Button onPress={() => this._login() }>connect with facebook</Button>
-        )}
+        <Button onPress={() => this._login() }>Login with Facebook</Button>
       </View>
     )
   }
@@ -69,5 +65,13 @@ const styles = StyleSheet.create({
   }
 });
 
+// get relevant props from state
+function mapStateToProps(state) {
+  const { auth } = state;
 
-export default Login
+  return {
+    auth
+  };
+}
+
+export default connect(mapStateToProps)(Login);

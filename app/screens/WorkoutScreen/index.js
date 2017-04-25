@@ -5,8 +5,19 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Dimensions
 } from 'react-native';
+import { connect } from 'react-redux';
+
+import {
+  toggleBodypart,
+  getExercises,
+  addExercise
+} from 'app/actions/workout';
+
+import {warn, log} from 'app/utils/log';
+const { height, width } = Dimensions.get('window');
 
 import Modal from 'react-native-modalbox';
 
@@ -16,7 +27,10 @@ import CardSlider from 'app/components/CardSlider';
 import WorkoutNavbar from 'app/components/WorkoutNavbar';
 import Paragraph from 'app/components/Paragraph';
 
-@observer
+import AddExercise from 'app/components/AddExercise';
+import ExerciseSimple from 'app/components/ExerciseSimple';
+
+
 class WorkoutScreen extends Component {
 
   constructor(props) {
@@ -43,12 +57,9 @@ class WorkoutScreen extends Component {
   }
 
   componentDidMount() {
-  }
-
-  onSwipeRight(gestureState) {
-    this.setState({myText: 'You swiped right!'});
-  }
-  showModal() {
+    const { dispatch } = this.props;
+    // get exercises
+    dispatch(getExercises());
   }
 
   cancelWorkout() {
@@ -62,25 +73,57 @@ class WorkoutScreen extends Component {
     this.setState({modal: false});
   }
 
+  _addExercise(exercise) {
+    const { dispatch } = this.props;
+    // get exercises
+    dispatch(addExercise(exercise));
+  }
+
+  _toggleBodypart(bodypart){
+    const { dispatch } = this.props;
+    dispatch(toggleBodypart(bodypart));
+  }
+
   render() {
-    const { 
+    const { workout } = this.props;
+    const {
       exercises,
-      amountOfExercises,
-      numberOfSets,
-      totalSets,
-      amountOfEquipmentFilters,
-      amountOfBodypartFilters
-    } = WorkoutStore;  
+      allExercises,
+      loading,
+      filters 
+    } = workout;
+   
     return (
       <View
         style={styles.screen}
       > 
-        <CardSlider
-          totalSets={totalSets}
-          content={exercises}
-        />
+        <CardSlider>
+          {exercises.map((exercise,index) => {
+            return (
+              <View 
+                key={index}
+                style={[
+                  styles.card,
+                ]}
+              >
+                <ExerciseSimple
+                  exercise={exercise}
+                />
+              </View>
+            )
+          })}
+          <View style={styles.lastCard}>
+            <AddExercise
+              all={allExercises}
+              exercises={exercises}
+              loading={loading}
+              filters={filters}
+              toggleBodypart={(bodypart) => this._toggleBodypart(bodypart)}
+              addExercise={(exercise) => this._addExercise(exercise)}
+            />
+          </View>
+        </CardSlider>
         <WorkoutNavbar
-          startDate={WorkoutStore.startDate}
           endWorkout={() => this.setState({endModal: true}) }
           cancelWorkout={() => this.setState({cancelModal: true}) }
         />
@@ -166,8 +209,26 @@ const styles = StyleSheet.create({
   },
   iconSelected: {
     backgroundColor: 'purple'
+  },
+  card: {
+    width,
+  },
+  lastCard: {
+    width,
+    paddingTop: 20
   }
 });
 
+// get relevant props from state
+function mapStateToProps(state) {
+  const { workout } = state;
 
-export default WorkoutScreen
+  log(workout);
+  return {
+    workout
+  };
+}
+
+
+
+export default connect(mapStateToProps)(WorkoutScreen);

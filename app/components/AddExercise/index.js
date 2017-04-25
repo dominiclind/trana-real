@@ -13,6 +13,9 @@ import {
   ActivityIndicator
 } from 'react-native';
 
+
+import {warn, log} from 'app/utils/log';
+
 String.prototype.toProperCase = function () {
     return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 };
@@ -51,22 +54,19 @@ class AddExercise extends Component {
   }
 
   addExercise(exercise) {
-    WorkoutStore.addExercise(exercise);
+    // WorkoutStore.addExercise(exercise);
+    this.props.addExercise(exercise);
     this.setState({search: ''});
   }
-  _filter(exercises){
+  _filter(exercises, chosenExercises){
     const { search } = this.state;
-    const { exercises:chosenExercises } = WorkoutStore;
-
-    const chosen = chosenExercises.toJSON().map(e => e.name.toLowerCase());
+    
+    const chosen = chosenExercises.map(e => e.name.toLowerCase());
 
     let found = [];
     if (search.length > SEARCH_LENGTH) {
       found = byNonChosen(exercises, chosen);
       found = byName(found, search);
-      if(WorkoutStore.filters.bodyparts.length){
-        found = byBodypart(found, WorkoutStore.filters.bodyparts.toJS())
-      }
     }
 
     const all = {};
@@ -101,7 +101,11 @@ class AddExercise extends Component {
   }
 
   render() {
-    const { exercises = false } = this.state;
+    const {
+      exercises = false,
+      all = false,
+      filters,
+    } = this.props;
 
     return (
       <View style={ styles.component }>
@@ -117,33 +121,28 @@ class AddExercise extends Component {
               placeholder={`Type at least ${SEARCH_LENGTH+1} characters`}
               style={styles.input}
             />
-            <TouchableWithoutFeedback onPress={() => this.setState({showFilter: !this.state.showFilter})}>
+            <TouchableWithoutFeedback
+              onPress={() => this.setState({showFilter: !this.state.showFilter})
+            }>
               <View>
                 <Icon style={[styles.searchIcon, styles.filterBtn]} name="md-more"/>
-                {WorkoutStore.amountOfBodypartFilters ? (
-                  <StyledText weight="bold" style={[styles.filterCount]}>{WorkoutStore.amountOfBodypartFilters}</StyledText>
-                ) : null}
+                <StyledText weight="bold" style={[styles.filterCount]}>2</StyledText>
               </View>
             </TouchableWithoutFeedback>
           </View>
           {this.state.showFilter ? (
-            <FilterList filters={WorkoutStore.filters} />
+            <FilterList filters={filters} toggleBodypart={(bodypart) => this.props.toggleBodypart(bodypart)}/>
           ): null}
        
         </View>
 
-        {exercises ? (
+        {all ? (
           <ImmutableListView
-            immutableData={this._filter(exercises)}
+            immutableData={this._filter(all, exercises)}
             renderRow={(rowData) => this.renderExerciseListItem(rowData)}
             renderSectionHeader={this.renderSectionHeader}
           />
         ) : <View style={{flex:1, justifyContent: 'center'}}><ActivityIndicator /></View> }
-        <ScrollView
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="never"
-        >
-        </ScrollView>
       </View>
     )
   }

@@ -33,7 +33,11 @@ class ParallaxHeader extends Component {
 
 
   render() {
-    const { title = 'Placeholder title', subtitle = ' '} = this.props;
+    const {
+      title = 'Placeholder title',
+      subtitle = ' ',
+      margin = false
+    } = this.props;
 
     const headerHeight = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -88,11 +92,7 @@ class ParallaxHeader extends Component {
               [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
             )}
         >
-          <View style={styles.scrollViewContent}>
-            
-            <View style={styles.chart}>
-              <Image style={styles.fakeChart} source={require('./chart.png')} />
-            </View>
+          <View style={[ styles.scrollViewContent, margin ? {marginTop: 0} : null]}>
             {this.props.children}
           </View>
         </ScrollView>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   scrollViewContent: {
-    marginTop: HEADER_MAX_HEIGHT - 20,
+    marginTop: HEADER_MAX_HEIGHT + 20,
   },
 });
 

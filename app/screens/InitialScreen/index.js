@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react/native';
 import {
   View,
   Text,
   StyleSheet,
   ActivityIndicator
 } from 'react-native';
+import { connect } from 'react-redux';
 
-import Firebase from 'app/stores/Firebase';
+import {warn, log} from 'app/utils/log';
 
-@observer
+import { checkLogin } from 'app/actions/auth';
+
+
 class InitialScreen extends Component {
 
   constructor(props) {
@@ -17,10 +19,17 @@ class InitialScreen extends Component {
   }
 
   componentDidMount() {
-    Firebase.checkLogin();
+    const { dispatch } = this.props;
+
+    dispatch(checkLogin());
+    // Firebase.checkLogin();
   }
 
   render() {
+    const { auth } = this.props;
+
+    log(auth);
+
     return (
       <View style={styles.screen}>
         <ActivityIndicator color="black" size="large" />
@@ -48,4 +57,14 @@ const styles = StyleSheet.create({
 });
 
 
-export default InitialScreen
+
+// get relevant props from state
+function mapStateToProps(state) {
+  const { auth } = state;
+
+  return {
+    auth
+  };
+}
+
+export default connect(mapStateToProps)(InitialScreen);

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react/native';
 import {
   View,
   Text,
@@ -16,8 +15,6 @@ import ExerciseGuide from 'app/components/ExerciseGuide';
 import {getNormalizedBodyPart} from 'app/utils/workout';
 
 
-
-@observer
 class ExerciseScreen extends Component {
 
   constructor(props) {

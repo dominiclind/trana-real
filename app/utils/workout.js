@@ -47,7 +47,7 @@ const getNormalizedBodyPart = (muscle = '') => {
 const getBodypartsWorked = (exercises) => {
 	const arrOfBodyParts = [];
 
-	exercises.reverse().forEach(e => {
+	exercises.forEach(e => {
 		arrOfBodyParts.push(getNormalizedBodyPart(e['Main Muscle Worked'].trim()));
 	});
 

@@ -2,7 +2,7 @@ import {
   CHECK_LOGIN,
   CHECK_LOGIN_SUCCESS,
   LOGOUT
-} from '../actions/auth';
+} from './AuthActions';
 
 import {warn, log} from 'app/utils/log';
 

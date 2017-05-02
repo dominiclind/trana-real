@@ -54,7 +54,6 @@ class AddExercise extends Component {
   }
 
   addExercise(exercise) {
-    // WorkoutStore.addExercise(exercise);
     this.props.addExercise(exercise);
     this.setState({search: ''});
   }
@@ -126,7 +125,9 @@ class AddExercise extends Component {
             }>
               <View>
                 <Icon style={[styles.searchIcon, styles.filterBtn]} name="md-more"/>
-                <StyledText weight="bold" style={[styles.filterCount]}>2</StyledText>
+                {filters.bodyparts.length ? (
+                  <StyledText weight="bold" style={[styles.filterCount]}>{filters.bodyparts.length}</StyledText>
+                ) : null}
               </View>
             </TouchableWithoutFeedback>
           </View>

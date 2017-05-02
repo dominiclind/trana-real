@@ -51,7 +51,9 @@
     "reactotron-react-native": "^1.10.0",
     "reactotron-redux": "^1.10.0",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.0",
     "redux-logger": "^3.0.1",
+    "redux-persist": "^4.7.1",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {

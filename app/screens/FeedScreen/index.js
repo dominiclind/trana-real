@@ -7,10 +7,11 @@ import {
   Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 
-import { logout } from 'app/actions/auth';
-import { getFeed } from 'app/actions/feed';
-import { startWorkout } from 'app/actions/workout';
+import { logout } from 'app/modules/auth/AuthActions';
+import { getFeed } from 'app/modules/feed/FeedActions';
+import { startWorkout } from 'app/modules/workout/WorkoutActions';
 
 import {warn, log} from 'app/utils/log';
 
@@ -19,7 +20,6 @@ import Me from 'app/components/Me';
 import Button from 'app/components/Button';
 import FeedListItem from 'app/components/FeedListItem';
 
-import {getDay} from 'app/utils/time';
 import {getExercisesForWorkout} from 'app/utils/workout';
 
 class FeedScreen extends Component {
@@ -44,8 +44,8 @@ class FeedScreen extends Component {
         return (
           <FeedListItem
             key={i}
-            name={auth.user.displayName}
-            avatar={auth.user.photoURL}
+            {...workout}
+            onPress={() => Actions.singleWorkoutHistory({workout})}
           />
         )
       });

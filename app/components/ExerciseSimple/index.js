@@ -11,6 +11,8 @@ import {
 import Header from 'app/components/Header';
 import Button from 'app/components/Button';
 import Paragraph from 'app/components/Paragraph';
+import Set from 'app/components/Set';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -31,25 +33,21 @@ class ExerciseSimple extends Component {
   }
 
   _addSet() {
-    const { fullscreen, exercise } = this.props;
-    const { name, sets = [] } = exercise;
-    
-    // WorkoutStore.addSet(exercise);
-    this.state.sets.push({
-      done: false,
-      reps: '',
-      weight: ''
-    });
-    this.setState({ sets: this.state.sets });
+    const { exercise } = this.props;
+    this.props.addSet(exercise);
   }
-  deleteExercise() {
-    const { exercise } = this.props;
-    WorkoutStore.deleteExercise(exercise);
+  _performSet() {
+    const { exercise } = this.props;
+    this.props.performSet({index, set: current });
+  }
+  _deleteExercise() {
+    const { exercise } = this.props;
+    this.props.deleteExercise(exercise);
   }
 
   render() {
-    const { fullscreen, exercise } = this.props;
-        return (
+    const { fullscreen, exercise, sets = [] } = this.props;
+    return (
       <View style={ styles.component }>
         <Header style={styles.header}>{exercise.name}</Header>
 
@@ -58,7 +56,7 @@ class ExerciseSimple extends Component {
           name="md-remove-circle"
           size={30}
           color="black"
-          onPress={() => this.deleteExercise()}
+          onPress={() => this._deleteExercise()}
         />
 
         <View style={styles.tableHeader}>
@@ -72,56 +70,15 @@ class ExerciseSimple extends Component {
           keyboardShouldPersistTaps="always"
           keyboardDismissMode="on-drag"
         >
-          {this.state.sets.map((set, index) => {
-            return (
-              <View 
-                key={index}
-                style={[
-                  styles.setItem,
-                  { zIndex: 100-index }
-                ]}
-              >
-                <Paragraph style={styles.setIndicator}>{index+1}</Paragraph>
-                <TextInput
-                  value={this.state.sets[index].reps || ''}
-                  onChangeText={(text) => {
-                    this.state.sets[index].reps = text;
-                    this.setState({ sets: this.state.sets });
-                  }}
-                  onEndEditing={() => {
-                    WorkoutStore.saveSet(exercise, index, {reps: this.state.sets[index].reps});
-                  }}
-                  autoCapitalize="characters"
-                  maxLength={2} 
-                  keyboardType="phone-pad"
-                  returnKeyType="done"
-                  autoCorrect={false}
-                  placeholder="12"
-                  placeholderTextColor="rgba(0,0,0,.15)"
-                  style={[styles.input, {width: 50}]}
-                />
-                <Paragraph style={styles.asterix}>*</Paragraph>
-                <TextInput
-                  value={this.state.sets[index].weight || ''}
-                  onChangeText={(text) => {
-                    this.state.sets[index].weight = text;
-                    this.setState({ weight: this.state.weight });
-                  }}
-                  onEndEditing={() => {
-                    WorkoutStore.saveSet(exercise, index, {weight: this.state.sets[index].weight});
-                  }}
-                  maxLength={3}
-                  autoCapitalize="characters"
-                  keyboardType="phone-pad"
-                  returnKeyType="done"
-                  autoCorrect={false}
-                  placeholder="80"
-                  placeholderTextColor="rgba(0,0,0,.15)"
-                  style={styles.input}
-                />
-              </View>
-            )
-          })}
+          {sets.map((set, index) => (
+            <Set
+              key={index}
+              index={index}
+              set={set}
+              onRepsChange={(reps) => this.props.onSetChange(index, {reps})}
+              onWeightChange={(weight) => this.props.onSetChange(index, {weight})}
+            />
+          ))}
           <View style={styles.addNewSetWrap}>
             <Button onPress={() => this._addSet()}>Add Set</Button>
           </View>
@@ -158,36 +115,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 50
   },
-  setItem: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    paddingTop: 15,
-    paddingBottom: 5,
-    borderBottomWidth : 1,
-    borderBottomColor: '#4d4d4d',
-    paddingLeft: 50,
-    // shadowRadius: 5,
-    // shadowOpacity: .3,
-    // shadowColor: 'black',
-    // shadowOffset: {
-    //   x: 0,
-    //   y: 10
-    // }
-  },
-  setIndicator: {
-    position: 'absolute',
-    left: 10,
-    top: 24,
-    fontSize: 22,
-    lineHeight: 29,
-    width: 30,
-    height: 30,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    borderRadius: 15, 
-  },
   tableHeader: {
     backgroundColor: 'rgba(0,0,0,.2)',
     flexDirection: 'row',
@@ -209,30 +136,6 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: 'transparent'
   },
-  asterix: {
-    width: 20,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 30,
-    lineHeight: 60,
-    color: 'rgba(0,0,0,.1)',
-    backgroundColor: 'transparent'
-  },
-  input: {
-    height: 40,
-    width: 75,
-    color: '#4d4d4d',
-    marginTop: 4,
-    marginRight: 10,
-    textAlign:'center',
-    fontSize: 30,
-    fontFamily: 'Circular',
-    backgroundColor: 'rgba(0,0,0,.1)'
-  },
-  addNewSetWrap: {
-    //marginTop: 20
-  }
 });
 
 

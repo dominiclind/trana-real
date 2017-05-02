@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { login } from 'app/actions/auth';
+import { login } from 'app/modules/auth/AuthActions';
 
 import SocialAuth from 'react-native-social-auth';
 import Button from 'app/components/Button';

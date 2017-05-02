@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import {warn, log} from 'app/utils/log';
 
-import { checkLogin } from 'app/actions/auth';
+import { checkLogin } from 'app/modules/auth/AuthActions';
 
 
 class InitialScreen extends Component {

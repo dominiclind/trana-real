@@ -8,6 +8,7 @@ import LoginScreen from 'app/screens/LoginScreen';
 import InitialScreen from 'app/screens/InitialScreen';
 import FeedScreen from 'app/screens/FeedScreen';
 import ExerciseScreen from 'app/screens/ExerciseScreen';
+import SingleWorkoutHistoryScreen from 'app/screens/SingleWorkoutHistoryScreen';
 import KitchenSink from 'app/screens/KitchenSink';
 
 
@@ -51,6 +52,7 @@ export default class Routes extends Component {
         		component={FeedScreen}
         		title="Feed"
         		type="replace"
+                animationStyle={regularSlide}
         	/>
         	<Scene
         		key="workout"
@@ -60,9 +62,9 @@ export default class Routes extends Component {
                 animationStyle={regularSlide}
         	/>
             <Scene
-                key="exercise"
-                component={ExerciseScreen}
-                title="Exercise"
+                key="singleWorkoutHistory"
+                component={SingleWorkoutHistoryScreen}
+                title="Workout"
                 animationStyle={regularSlide}
             />
         </Scene>

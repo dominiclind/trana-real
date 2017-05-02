@@ -1,7 +1,6 @@
 import {
   GET_THING,
-  GET_THING_SUCCESS,
-} from '../actions/thing';
+} from './BoilerActions';
 
 import {warn, log} from 'app/utils/log';
 
@@ -16,11 +15,6 @@ export default function thing(state = initialState, action) {
       return {
         ...state,
         loading: true
-      }
-    case GET_THING_SUCCESS:
-      return {
-        ...state,
-        loading:false,
       }
     default:
       return state;

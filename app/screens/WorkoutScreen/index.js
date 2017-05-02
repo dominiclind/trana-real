@@ -13,8 +13,13 @@ import { connect } from 'react-redux';
 import {
   toggleBodypart,
   getExercises,
-  addExercise
-} from 'app/actions/workout';
+  addExercise,
+  deleteExercise,
+  addSet,
+  performSet,
+  saveToFeed,
+  cancelWorkout
+} from 'app/modules/workout/WorkoutActions';
 
 import {warn, log} from 'app/utils/log';
 const { height, width } = Dimensions.get('window');
@@ -62,27 +67,40 @@ class WorkoutScreen extends Component {
     dispatch(getExercises());
   }
 
-  cancelWorkout() {
-    WorkoutStore.cancelWorkout();
-  }
-  saveWorkout() {
-    const { emojis, selectedEmoji } = this.state;
-    const mood = emojis[selectedEmoji].icon;
-
-    WorkoutStore.endWorkout(mood);
-    this.setState({modal: false});
-  }
-
   _addExercise(exercise) {
     const { dispatch } = this.props;
     // get exercises
     dispatch(addExercise(exercise));
   }
+  _deleteExercise(exercise){
+    const { dispatch } = this.props;
+    // get exercises
+    dispatch(deleteExercise(exercise));
+  }
+  _addSet(exercise){
+    const { dispatch } = this.props;
+    dispatch(addSet(exercise));
+  }
+  _performSet(exercise, index, set){
+    const { dispatch } = this.props;
+    dispatch(performSet(exercise, index, set));
+  }
+  _saveWorkout() {
+    const { dispatch } = this.props;
+    const { emojis, selectedEmoji } = this.state;
+    const mood = emojis[selectedEmoji].icon;
 
+    dispatch(saveToFeed(mood));
+  }
+  _cancelWorkout() {
+    const { dispatch } = this.props;
+    dispatch(cancelWorkout())
+  }
   _toggleBodypart(bodypart){
     const { dispatch } = this.props;
     dispatch(toggleBodypart(bodypart));
   }
+
 
   render() {
     const { workout } = this.props;
@@ -90,7 +108,8 @@ class WorkoutScreen extends Component {
       exercises,
       allExercises,
       loading,
-      filters 
+      filters,
+      sets
     } = workout;
    
     return (
@@ -107,7 +126,12 @@ class WorkoutScreen extends Component {
                 ]}
               >
                 <ExerciseSimple
+                  performSet={(set) => this._performSet(exercise, set)}
+                  deleteExercise={(exercise) => this._deleteExercise(exercise)}
+                  addSet={() => this._addSet(exercise)}
                   exercise={exercise}
+                  sets={sets[exercise.id] || []}
+                  onSetChange={(index, set) => this._performSet(exercise, index, set)}
                 />
               </View>
             )
@@ -153,7 +177,7 @@ class WorkoutScreen extends Component {
                 })}
               </View>
             </View>
-            <Button bg="pink" color="black" onPress={() => this.saveWorkout() }>
+            <Button bg="pink" color="black" onPress={() => this._saveWorkout() }>
               SAVE 💾
             </Button>
         </Modal>
@@ -166,7 +190,7 @@ class WorkoutScreen extends Component {
             <View style={{alignItems: 'center'}}>
               <Paragraph weight="bold" style={styles.text}>CANCEL WORKOUT?</Paragraph>
             </View>
-            <Button bg="pink" color="black" onPress={() => this.cancelWorkout() }>
+            <Button bg="pink" color="black" onPress={() => this._cancelWorkout() }>
               🚮
             </Button>
         </Modal>

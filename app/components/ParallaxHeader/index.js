@@ -14,8 +14,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import StyledText from 'app/components/StyledText';
 
-const HEADER_MAX_HEIGHT = 80;
-const HEADER_MIN_HEIGHT = 60;
+const HEADER_MAX_HEIGHT = 90;
+const HEADER_MIN_HEIGHT = 65;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 class ParallaxHeader extends Component {
@@ -46,14 +46,14 @@ class ParallaxHeader extends Component {
     });
 
     const headerBgColor = this.state.scrollY.interpolate({
-      inputRange: [0, HEADER_SCROLL_DISTANCE + 50],
+      inputRange: [0, HEADER_SCROLL_DISTANCE],
       outputRange: ['rgba(255,255,255,0)', 'rgba(255,255,255,1)'],
       extrapolate: 'clamp',
     });
 
     const backButtonTop = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
-      outputRange: [30, 22],
+      outputRange: [45, 25],
       extrapolate: 'clamp',
     });
 
@@ -71,7 +71,7 @@ class ParallaxHeader extends Component {
 
     const barHeight = this.state.scrollY.interpolate({
       inputRange: [0, HEADER_SCROLL_DISTANCE],
-      outputRange: [40, 32],
+      outputRange: [40, 35],
       extrapolate: 'clamp',
     });
     const shadowOpacity = this.state.scrollY.interpolate({
@@ -109,7 +109,7 @@ class ParallaxHeader extends Component {
           </Animated.View>
         
           <Animated.View style={[styles.backIconButton, {top: backButtonTop}]}>
-            <TouchableOpacity style={{padding: 10}}>
+            <TouchableOpacity style={{padding: 10}} onPress={this.props.onBack}>
               <Image source={require('./backbtn.png')} style={styles.backImage}/>
             </TouchableOpacity>
           </Animated.View>
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
     fontSize: 18,
+    marginBottom: 2,
     fontWeight: '600',
     textAlign: 'center',
   },

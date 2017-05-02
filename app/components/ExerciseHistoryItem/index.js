@@ -18,13 +18,14 @@ class ExerciseHistoryItem extends Component {
 
   render() {
     const {
-      sets = [1,2]
+      sets = [1,2],
+      name = 'exercise name'
     } = this.props;
 
     return (
       <View style={ styles.component }>
         <View style={styles.contentContainer}>
-          <StyledText weight="bold" style={styles.name}>Barbel Bench Press  - Medium Grip</StyledText>
+          <StyledText weight="bold" style={styles.name}>{name}</StyledText>
           <StyledText style={styles.bodyparts}>Chest * Shoulders & Triceps</StyledText>
 
           <View style={styles.sets}>
@@ -33,11 +34,19 @@ class ExerciseHistoryItem extends Component {
               style={{flex: 1}} 
               showsHorizontalScrollIndicator={false}
             >
-              {sets.map((set, i) => (
-                <View style={styles.set} key={i}>
-                  <StyledText weight="bold" style={styles.setText}>10 * 150kg</StyledText>
-                </View>
-              ))}
+              {sets.map((set, i) => {
+                
+                let string = '';
+
+                const reps = Number(set.reps);
+                const weight = Number(set.weight);
+
+                return (
+                  <View style={styles.set} key={i}>
+                    <StyledText weight="bold" style={styles.setText}>{reps} {weight > 0 ? `* ${weight} kg` : 'reps'}</StyledText>
+                  </View>
+                )
+              })}
             </ScrollView>
           </View>
 

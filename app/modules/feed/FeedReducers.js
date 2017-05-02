@@ -1,7 +1,7 @@
 import {
   GET_FEED,
   GET_FEED_SUCCESS,
-} from '../actions/feed';
+} from './FeedActions';
 
 import {warn, log} from 'app/utils/log';
 

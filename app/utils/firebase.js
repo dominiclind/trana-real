@@ -33,11 +33,24 @@ export const login = (token) => {
 export const logout = () => firestack.auth.signOut();
 
 // get feed
-export const getFeed = (uid) => {
+// export const getFeed = (uid) => {
+//   return new Promise((resolve, reject) => {
+// 	  firestack.database.ref('users')
+// 	  .child(uid)
+// 	  .child('workouts')
+// 	  .once('value')
+// 	  .then((snapshot) => {
+// 	    if (snapshot.val) {
+// 	      resolve(returnFirebaseAsArray(snapshot));
+// 	    }
+// 	  })
+// 	}).catch(error => console.log(error));
+// }
+
+// get feed
+export const getFeed = () => {
   return new Promise((resolve, reject) => {
-	  firestack.database.ref('users')
-	  .child(uid)
-	  .child('workouts')
+	  firestack.database.ref('feed')
 	  .once('value')
 	  .then((snapshot) => {
 	    if (snapshot.val) {
@@ -45,4 +58,9 @@ export const getFeed = (uid) => {
 	    }
 	  })
 	}).catch(error => console.log(error));
+}
+
+// save to feed
+export const saveToFeed = (workout) => {
+  firestack.database.ref('feed').push(workout)
 }

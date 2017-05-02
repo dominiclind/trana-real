@@ -77,21 +77,6 @@ class CardSlider extends Component {
     const { nativeEvent } = e;
     this.setState({ index: nativeEvent.contentOffset.x / width });
   }
-
-  startWorkout(index) {
-    WorkoutStore.startWorkout(index);
-  }
-
-  _filterData(data) {
-    const { query } = this.state;
-    const filtered = data.filter(e => {
-      if (e.name.toLowerCase().indexOf(query.toLowerCase()) > -1) {
-        return e;
-      }
-    });
-    return filtered;
-  }
-
   render() {
     const { fullscreen = false, content } = this.props;
     const animVertical = this.state.fullscreen.interpolate({

@@ -6,9 +6,9 @@ import store from 'react-native-simple-store';
 import {warn, log} from 'app/utils/log';
 import * as firebase from 'app/utils/firebase';
 
-export const CHECK_LOGIN = 'CHECK_LOGIN';
-export const CHECK_LOGIN_SUCCESS = 'CHECK_LOGIN_SUCCESS';
-export const LOGOUT = 'LOGOUT';
+export const CHECK_LOGIN = 'AUTH/CHECK_LOGIN';
+export const CHECK_LOGIN_SUCCESS = 'AUTH/CHECK_LOGIN_SUCCESS';
+export const LOGOUT = 'AUTH/LOGOUT';
 
 
 export function checkLogin() {

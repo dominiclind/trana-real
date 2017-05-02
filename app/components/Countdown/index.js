@@ -52,8 +52,6 @@ class Countdown extends Component {
     const minutes = Math.floor(time / 60);
     const seconds = time - minutes * 60;
 
-    console.log('render')
-
     return (
       <View style={ styles.component }>
         <StyledText weight="bold" style={styles.label}>REST</StyledText>

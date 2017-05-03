@@ -34,11 +34,14 @@ class SingleWorkoutHistoryScreen extends Component {
   render() {
     const { workout } = this.props;
     const {
-      exercises,
-      sets,
+      exercises = [],
+      sets = {},
       startDate,
       endDate
     } = workout;
+
+    console.log(exercises);
+
     return (
       <ParallaxHeader
         onBack={() => Actions.pop()}
@@ -53,7 +56,7 @@ class SingleWorkoutHistoryScreen extends Component {
             <ExerciseHistoryItem
               key={index}
               {...exercise}
-              sets={workout.sets[exercise.id]}
+              sets={sets[exercise.id]}
             />
           ))}
         </View>

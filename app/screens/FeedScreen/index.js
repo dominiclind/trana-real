@@ -41,13 +41,17 @@ class FeedScreen extends Component {
     if (feed) {
       return feed.map((item,i) => {
         const workout = item.value;
-        return (
-          <FeedListItem
-            key={i}
-            {...workout}
-            onPress={() => Actions.singleWorkoutHistory({workout})}
-          />
-        )
+        if(workout.exercises){
+          return (
+            <FeedListItem
+              key={i}
+              {...workout}
+              onPress={() => Actions.singleWorkoutHistory({workout})}
+            />
+          )
+        } else {
+          return null
+        }
       });
     } else {
       return null;

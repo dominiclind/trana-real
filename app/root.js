@@ -26,6 +26,10 @@ class Root extends Component {
       OneSignal.addEventListener('opened', this.onOpened);
       OneSignal.addEventListener('registered', this.onRegistered);
       OneSignal.addEventListener('ids', this.onIds);
+      codePush.sync({
+        updateDialog: true,
+        installMode: codePush.InstallMode.IMMEDIATE
+      });
   }
 
   componentWillUnmount() {

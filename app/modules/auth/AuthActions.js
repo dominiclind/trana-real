@@ -14,16 +14,20 @@ export const LOGOUT = 'AUTH/LOGOUT';
 export function checkLogin() {
   return (dispatch) => {
     dispatch({ type: CHECK_LOGIN });
-   	firebase.checkLogin((evt) => {
+   	firebase.checkLogin((user) => {
 		  // evt is the authentication event
-		  if (!evt.authenticated) {
+		  if (!user) {
 		    // There was an error or there is no user
 		    // console.error(evt.error);
 		    // NavStore.goTo('login');
 		    Actions.login();
 		  } else {
 		    // evt.user contains the user details
-		    dispatch({type: CHECK_LOGIN_SUCCESS, user: evt.user});
+		    dispatch({type: CHECK_LOGIN_SUCCESS, user: {
+		    	displayName: user.displayName,
+		    	uid: user.uid,
+		    	photoURL: user.photoURL
+		    }});
 		    // store.save('user', evt.user);
 		    Actions.feed();
 		  }

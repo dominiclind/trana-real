@@ -26,7 +26,7 @@ class FeedListItem extends Component {
   render() {
     const {
       sets,
-      exercises,
+      exercises = {},
       user,
       startDate,
       endDate

@@ -20,6 +20,7 @@
     "axios": "^0.15.3",
     "color": "^1.0.3",
     "date-fns": "^1.27.2",
+    "firebase": "^3.9.0",
     "firebase-tools": "^3.5.0",
     "lottie-react-native": "^1.0.1",
     "mobile-center-analytics": "^0.4.0",

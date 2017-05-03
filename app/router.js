@@ -62,6 +62,12 @@ export default class Routes extends Component {
                 animationStyle={regularSlide}
         	/>
             <Scene
+                key="exercise"
+                component={ExerciseScreen}
+                title="Exercise"
+                animationStyle={regularSlide}
+            />
+            <Scene
                 key="singleWorkoutHistory"
                 component={SingleWorkoutHistoryScreen}
                 title="Workout"

@@ -82,7 +82,7 @@ class FeedScreen extends Component {
             fontSize: 12,
             color:'rgba(0,0,0,.3)'
           }}>
-            MY WORKOUTS
+            Feed
           </Paragraph>
           <ScrollView>
             {loading ? <ActivityIndicator /> : null}
@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   bottomButtonWrap: {
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 0,
     alignItems: 'center'
   },
   modal: {

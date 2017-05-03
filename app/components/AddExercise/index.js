@@ -24,7 +24,6 @@ import {byNonChosen, byName, byBodypart} from 'app/utils/filter';
 
 import { getExercises, getBodybuildingExercises } from 'app/utils/api';
 
-import WorkoutStore from 'app/stores/Workout';
 import Paragraph from 'app/components/Paragraph';
 import Button from 'app/components/Button';
 import ExerciseListItem from 'app/components/ExerciseListItem';
@@ -57,7 +56,7 @@ class AddExercise extends Component {
     this.props.addExercise(exercise);
     this.setState({search: ''});
   }
-  _filter(exercises, chosenExercises){
+  _filter(exercises, chosenExercises, immutable){
     const { search } = this.state;
     
     const chosen = chosenExercises.map(e => e.name.toLowerCase());
@@ -73,9 +72,13 @@ class AddExercise extends Component {
       all[exercise.id] = exercise;
     });
 
-    return Immutable.fromJS({
-      'All Exercises': all,
-    });
+    if(immutable){ 
+      return Immutable.fromJS({
+        'All Exercises': all,
+      });
+    } else {
+      return all
+    }
   }
 
   renderExerciseListItem(rowData) {
@@ -108,6 +111,31 @@ class AddExercise extends Component {
 
     return (
       <View style={ styles.component }>
+        { /* }
+        <ImmutableListView
+          immutableData={this._filter(all, exercises)}
+          renderRow={(rowData) => this.renderExerciseListItem(rowData)}
+          renderSectionHeader={this.renderSectionHeader}
+        />
+        { */}
+        {all ? (
+          <ScrollView
+            style={{paddingTop: 60}}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            {Object.keys(this._filter(all, exercises, false)).map((key, index) => {
+              const $e = this._filter(all, exercises, false)[key];
+              return (
+                <ExerciseListItem
+                  key={index}
+                  exercise={$e}
+                  onAdd={() => this.addExercise($e)}
+                />
+              )
+            })} 
+          </ScrollView>
+        ) : <View style={{flex:1, justifyContent: 'center'}}><ActivityIndicator /></View> }
         <View style={styles.inputWrap}>
           <View style={styles.searchInput}>
             <Icon name="md-search" style={styles.searchIcon}/>
@@ -136,14 +164,6 @@ class AddExercise extends Component {
           ): null}
        
         </View>
-
-        {all ? (
-          <ImmutableListView
-            immutableData={this._filter(all, exercises)}
-            renderRow={(rowData) => this.renderExerciseListItem(rowData)}
-            renderSectionHeader={this.renderSectionHeader}
-          />
-        ) : <View style={{flex:1, justifyContent: 'center'}}><ActivityIndicator /></View> }
       </View>
     )
   }
@@ -155,6 +175,12 @@ const styles = StyleSheet.create({
   component : {
     backgroundColor:'rgba(0,0,0,.0)',
     flex: 1,
+  },
+  inputWrap: {
+    position: 'absolute',
+    top:0,
+    left:0,
+    right:0
   },
   searchInput: {
     flexDirection: 'row',

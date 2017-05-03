@@ -4,6 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import {
   View,
   Text,
+  Image,
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
@@ -29,18 +30,27 @@ class ExerciseListItem extends Component {
     const bodyPart = getNormalizedBodyPart(exercise['Main Muscle Worked'].trim());
 
     return (
-      <TouchableOpacity key={exercise.name}>
+      <View style={styles.listItemWrap}>
+
+        <View style={styles.listItemShadow}>
         <View style={styles.listItem}>
-          <Icon style={styles.icon} name="add" onPress={() => this.props.onAdd()} />
-          <View style={{flex: 1, paddingHorizontal: 10}}>
-            <Paragraph weight="bold" style={styles.exerciseName}>{exercise.name.toUpperCase()}</Paragraph>
-            <View style={{flexDirection: 'row'}}>
+          <Image
+            style={styles.image}
+            source={{uri: exercise.pic_left}}
+          >
+            <View style={styles.tagRow}>
               <Paragraph weight="bold" style={styles.tag}>{bodyPart.toUpperCase()}</Paragraph>
             </View>
+          </Image>
+          <View style={styles.textContent}>
+            <Paragraph weight="bold" style={styles.exerciseName}>{exercise.name}</Paragraph>
+            <Paragraph style={styles.equipment}>Equipment: {exercise.Equipment}</Paragraph>
+            <Icon style={styles.icon} name="add" onPress={() => this.props.onAdd()} />
           </View>
-          <Icon style={styles.icon} name="info-outline" onPress={() => Actions.exercise({exercise})} />
         </View>
-      </TouchableOpacity>
+        </View>
+
+      </View>
     )
   }
 }
@@ -48,19 +58,37 @@ class ExerciseListItem extends Component {
 
 // styles
 const styles = StyleSheet.create({
+  listItemWrap: {
+    flex: 1,
+    marginLeft: 20,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  listItemShadow: {
+    shadowRadius: 9,
+    shadowOffset: {x:0, y:0},
+    shadowColor: 'black',
+    shadowOpacity: .2,
+  },
   listItem: {
     // justifyContent: 'center',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 15,
-    backgroundColor: 'transparent',
-    borderBottomWidth: 1,
-    flexDirection: 'row'
+    width: 300,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    shadowRadius: 4,
+    shadowOffset: {x:0, y:10},
+    shadowColor: 'black',
+    shadowOpacity: 1,
+    overflow: 'hidden'
   },
-  exerciseName: {
-    fontSize: 16,
-    marginBottom: 5
+  image: {
+    height: 230,
+    resizeMode: 'cover',
+    alignItems: 'flex-end',
+    padding: 10,
+  },
+  tagRow: {
+    flexDirection: 'row'
   },
   tag: {
     fontSize: 12,
@@ -68,9 +96,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     marginBottom: 0,
     paddingHorizontal: 10,
-    paddingVertical: 5
+    paddingVertical: 5,
+    borderRadius: 5,
+    overflow: 'hidden'
+  },
+  textContent: {
+    backgroundColor: 'white',
+    height: 100,
+    padding: 15,
+    justifyContent:'center'
+  },
+  exerciseName: {
+    fontSize: 15,
+    marginBottom: 4
+  },
+  equipment: {
+    fontSize: 14,
+    marginBottom: 15
   },
   icon: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
     fontSize: 30,
     backgroundColor: 'transparent'
   }

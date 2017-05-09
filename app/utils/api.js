@@ -9,7 +9,8 @@ const getBodybuildingExercises = () => new Promise((resolve,reject) => {
     axios.get(`${Config.API_URL}/exercises`).then(response => {
       if (response.status == 200) {
         const { data } = response;
-        const exercises = data.workouts;
+        // const exercises = data.workouts;
+        const exercises = data.featured;
         // cache = exercise;
         resolve(exercises);
       } else {

@@ -10,11 +10,11 @@ const getBodybuildingExercises = () => new Promise((resolve,reject) => {
       if (response.status == 200) {
         const { data } = response;
         // const exercises = data.workouts;
-        const exercises = data.featured;
+        const { featured, all, muscles } = data;
         // cache = exercise;
-        resolve(exercises);
+        resolve({featured, all, muscles});
       } else {
-        reject([]);
+        reject({featured: [], all: []});
       }
     });
   } else {

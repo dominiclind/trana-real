@@ -31,7 +31,7 @@ import {warn, log} from 'app/utils/log';
 
 const initialState = {
   loading: true,
-  allExercises: [],
+  allExercises: {featured: [], all: []},
   exercises: [],
   sets: {},
   perform: false,

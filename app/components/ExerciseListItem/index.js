@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
     shadowRadius: 9,
     shadowOffset: {x:0, y:0},
     shadowColor: 'black',
-    shadowOpacity: .2,
+    shadowOpacity: .0,
+    overflow:'visible'
   },
   listItem: {
     // justifyContent: 'center',

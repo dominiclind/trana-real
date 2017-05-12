@@ -27,6 +27,7 @@ import { getExercises, getBodybuildingExercises } from 'app/utils/api';
 import Paragraph from 'app/components/Paragraph';
 import Button from 'app/components/Button';
 import ExerciseListItem from 'app/components/ExerciseListItem';
+import ExerciseListItemSmall from 'app/components/ExerciseListItemSmall';
 import FilterList from 'app/components/FilterList';
 import StyledText from 'app/components/StyledText';
 
@@ -56,14 +57,16 @@ class AddExercise extends Component {
     this.props.addExercise(exercise);
     this.setState({search: ''});
   }
-  _filter(exercises, chosenExercises, immutable){
+  _filter(exercises, chosenExercises, immutable, featured = []){
     const { search } = this.state;
     
     const chosen = chosenExercises.map(e => e.name.toLowerCase());
-
+    const featuredE = featured.map(e => e.name.toLowerCase());
+   
     let found = [];
     if (search.length > SEARCH_LENGTH) {
       found = byNonChosen(exercises, chosen);
+      found = byNonChosen(found, featuredE);
       found = byName(found, search);
     }
 
@@ -106,26 +109,50 @@ class AddExercise extends Component {
     const {
       exercises = false,
       all = false,
+      featured = false,
       filters,
     } = this.props;
 
     return (
-      <View style={ styles.component }>
+      <ScrollView style={ styles.component }>
         { /* }
         <ImmutableListView
           immutableData={this._filter(all, exercises)}
           renderRow={(rowData) => this.renderExerciseListItem(rowData)}
           renderSectionHeader={this.renderSectionHeader}
         />
-        { */}
+       
+        <Paragraph style={{paddingLeft: 20, marginTop:80}} weight="bold">Muscles.se</Paragraph>
+        {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
+          const $e = this._filter(featured, exercises, false)[key];
+          return (
+            <ExerciseListItemSmall
+              key={index}
+              exercise={$e}
+              onAdd={() => this.addExercise($e)}
+            />
+          )
+        })}
+       { */}
+        <Paragraph style={{paddingLeft: 20, marginTop:80}} weight="bold">Top Exercises</Paragraph>
+        {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
+          const $e = this._filter(featured, exercises, false)[key];
+          return (
+            <ExerciseListItemSmall
+              key={index}
+              exercise={$e}
+              onAdd={() => this.addExercise($e)}
+            />
+          )
+        })} 
+        {/*}
         {all ? (
           <ScrollView
-            style={{paddingTop: 60}}
             horizontal
             showsHorizontalScrollIndicator={false}
           >
-            {Object.keys(this._filter(all, exercises, false)).map((key, index) => {
-              const $e = this._filter(all, exercises, false)[key];
+            {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
+              const $e = this._filter(featured, exercises, false)[key];
               return (
                 <ExerciseListItem
                   key={index}
@@ -136,6 +163,7 @@ class AddExercise extends Component {
             })} 
           </ScrollView>
         ) : <View style={{flex:1, justifyContent: 'center'}}><ActivityIndicator /></View> }
+        {*/}
         <View style={styles.inputWrap}>
           <View style={styles.searchInput}>
             <Icon name="md-search" style={styles.searchIcon}/>
@@ -162,9 +190,21 @@ class AddExercise extends Component {
           {this.state.showFilter ? (
             <FilterList filters={filters} toggleBodypart={(bodypart) => this.props.toggleBodypart(bodypart)}/>
           ): null}
-       
         </View>
-      </View>
+
+        <Paragraph style={{paddingLeft: 20, marginTop:20}} weight="bold">All the others...</Paragraph>
+        {Object.keys(this._filter(all, exercises, false, featured)).map((key, index) => {
+          const $e = this._filter(all, exercises, false, featured)[key];
+          return (
+            <ExerciseListItemSmall
+              key={index}
+              exercise={$e}
+              onAdd={() => this.addExercise($e)}
+            />
+          )
+        })}
+
+      </ScrollView>
     )
   }
 }
@@ -173,7 +213,7 @@ class AddExercise extends Component {
 // styles
 const styles = StyleSheet.create({
   component : {
-    backgroundColor:'rgba(0,0,0,.0)',
+    backgroundColor:'rgba(0,0,0,.07)',
     flex: 1,
   },
   inputWrap: {

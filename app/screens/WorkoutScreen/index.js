@@ -138,7 +138,8 @@ class WorkoutScreen extends Component {
           })}
           <View style={styles.lastCard}>
             <AddExercise
-              all={allExercises}
+              featured={allExercises.featured}
+              all={allExercises.all}
               exercises={exercises}
               loading={loading}
               filters={filters}

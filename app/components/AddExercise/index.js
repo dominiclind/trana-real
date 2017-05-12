@@ -113,6 +113,8 @@ class AddExercise extends Component {
       filters,
     } = this.props;
 
+    console.log('hey');
+
     return (
       <ScrollView style={ styles.component }>
         { /* }

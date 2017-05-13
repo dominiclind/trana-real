@@ -109,7 +109,7 @@ class AddExercise extends Component {
     const {
       exercises = false,
       all = false,
-      featured = false,
+      featured = [],
       filters,
     } = this.props;
 

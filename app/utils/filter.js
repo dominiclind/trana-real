@@ -1,6 +1,6 @@
 import {getNormalizedBodyPart} from 'app/utils/workout';
 
-export const byNonChosen = (exercises, chosen) => {
+export const byNonChosen = (exercises = [], chosen) => {
 	return exercises.filter(exercise => { // check matches
     if(chosen.indexOf(exercise.name.toLowerCase()) == -1){
       return exercise;
@@ -8,7 +8,7 @@ export const byNonChosen = (exercises, chosen) => {
   });
 }
 
-export const byName = (exercises, search) => {
+export const byName = (exercises = [], search) => {
 	return exercises.filter(exercise => {
     // search matches 
     const nameMatch = exercise.name.toLowerCase().indexOf(search.toLowerCase()) > -1;

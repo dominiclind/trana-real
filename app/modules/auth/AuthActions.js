@@ -1,4 +1,6 @@
 import { Actions } from 'react-native-router-flux';
+import {AsyncStorage } from 'react-native';
+import {purgeStoredState, autoRehydrate} from 'redux-persist'
 
 
 import store from 'react-native-simple-store';
@@ -39,6 +41,13 @@ export function login(token) {
 	firebase.login(token);
 }
 export function logout() {
+
+	purgeStoredState({storage: AsyncStorage}, ['workout']).then(() => {
+	  console.log('purge of someReducer completed')
+	}).catch(() => {
+	  console.log('purge of someReducer failed')
+	})
+
 	return (dispatch) => {
 		firebase.logout()
 		setTimeout(() => {

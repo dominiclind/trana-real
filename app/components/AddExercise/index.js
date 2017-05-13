@@ -117,25 +117,6 @@ class AddExercise extends Component {
 
     return (
       <ScrollView style={ styles.component }>
-        { /* }
-        <ImmutableListView
-          immutableData={this._filter(all, exercises)}
-          renderRow={(rowData) => this.renderExerciseListItem(rowData)}
-          renderSectionHeader={this.renderSectionHeader}
-        />
-       
-        <Paragraph style={{paddingLeft: 20, marginTop:80}} weight="bold">Muscles.se</Paragraph>
-        {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
-          const $e = this._filter(featured, exercises, false)[key];
-          return (
-            <ExerciseListItemSmall
-              key={index}
-              exercise={$e}
-              onAdd={() => this.addExercise($e)}
-            />
-          )
-        })}
-       { */}
         <Paragraph style={{paddingLeft: 20, marginTop:80}} weight="bold">Top Exercises</Paragraph>
         {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
           const $e = this._filter(featured, exercises, false)[key];
@@ -147,25 +128,7 @@ class AddExercise extends Component {
             />
           )
         })} 
-        {/*}
-        {all ? (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
-            {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
-              const $e = this._filter(featured, exercises, false)[key];
-              return (
-                <ExerciseListItem
-                  key={index}
-                  exercise={$e}
-                  onAdd={() => this.addExercise($e)}
-                />
-              )
-            })} 
-          </ScrollView>
-        ) : <View style={{flex:1, justifyContent: 'center'}}><ActivityIndicator /></View> }
-        {*/}
+        
         <View style={styles.inputWrap}>
           <View style={styles.searchInput}>
             <Icon name="md-search" style={styles.searchIcon}/>

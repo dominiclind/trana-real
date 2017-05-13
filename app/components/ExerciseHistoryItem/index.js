@@ -18,10 +18,9 @@ class ExerciseHistoryItem extends Component {
 
   render() {
     const {
-      sets = [1,2],
+      sets = [{reps: 10},{ reps: 9}],
       name = 'exercise name'
     } = this.props;
-
     return (
       <View style={ styles.component }>
         <View style={styles.contentContainer}>

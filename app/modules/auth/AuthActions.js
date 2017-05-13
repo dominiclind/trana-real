@@ -20,8 +20,6 @@ export function checkLogin() {
 		  // evt is the authentication event
 		  if (!user) {
 		    // There was an error or there is no user
-		    // console.error(evt.error);
-		    // NavStore.goTo('login');
 		    Actions.login();
 		  } else {
 		    // evt.user contains the user details
@@ -30,7 +28,6 @@ export function checkLogin() {
 		    	uid: user.uid,
 		    	photoURL: user.photoURL
 		    }});
-		    // store.save('user', evt.user);
 		    Actions.feed();
 		  }
 		});	
@@ -42,11 +39,7 @@ export function login(token) {
 }
 export function logout() {
 
-	purgeStoredState({storage: AsyncStorage}, ['workout']).then(() => {
-	  console.log('purge of someReducer completed')
-	}).catch(() => {
-	  console.log('purge of someReducer failed')
-	})
+	purgeStoredState({storage: AsyncStorage}, ['workout']);
 
 	return (dispatch) => {
 		firebase.logout()

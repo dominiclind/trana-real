@@ -27,7 +27,6 @@ const { height, width } = Dimensions.get('window');
 import Modal from 'react-native-modalbox';
 
 import Button from 'app/components/Button';
-import WorkoutStore from 'app/stores/Workout';
 import CardSlider from 'app/components/CardSlider';
 import WorkoutNavbar from 'app/components/WorkoutNavbar';
 import Paragraph from 'app/components/Paragraph';

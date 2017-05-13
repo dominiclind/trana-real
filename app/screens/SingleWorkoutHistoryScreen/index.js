@@ -11,7 +11,7 @@ import { Actions } from 'react-native-router-flux';
 import {warn, log} from 'app/utils/log';
 import { distanceInWordsToNow, differenceInMinutes, format } from 'date-fns';
 
-import {getBodypartsWorked} from 'app/utils/workout';
+import {getBodypartsWorked, getTotalWeight} from 'app/utils/workout';
 
 import Paragraph from 'app/components/Paragraph';
 import ParallaxHeader from 'app/components/ParallaxHeader';
@@ -49,7 +49,10 @@ class SingleWorkoutHistoryScreen extends Component {
         subtitle={`${format(endDate, 'dddd D/M YYYY')}`}
       >
         <View style={styles.head}>
-          <WorkoutMeta minutes={differenceInMinutes(endDate, startDate)} />
+          <WorkoutMeta
+            weight={getTotalWeight(sets)}
+            minutes={differenceInMinutes(endDate, startDate)}
+          />
         </View>
         <View style={{backgroundColor: 'white'}}>
           {exercises.map((exercise, index) => (

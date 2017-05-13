@@ -16,8 +16,6 @@ import Set from 'app/components/Set';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-import WorkoutStore from 'app/stores/Workout';
-
 class ExerciseSimple extends Component {
 
   constructor(props) {

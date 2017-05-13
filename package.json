@@ -29,6 +29,7 @@
     "mobx-persist": "^0.2.1",
     "mobx-react": "^3.5.4",
     "mobx-remotedev": "^0.2.5",
+    "numeral": "^2.0.6",
     "onecolor": "^3.0.4",
     "react": "^15.4.1",
     "react-native": "^0.40.0",

@@ -19,7 +19,7 @@ class WorkoutMeta extends Component {
   }
 
   render() {
-    const { minutes } = this.props;
+    const { minutes, weight=100 } = this.props;
 
     return (
       <View style={styles.component}>
@@ -29,7 +29,7 @@ class WorkoutMeta extends Component {
         </View>
         <View style={styles.metaItem}>
           <Image style={styles.metaIcon} source={require('./weight_icon.png')}/>
-          <StyledText weight="bold" style={styles.metaText}>100 kg lifted</StyledText>
+          <StyledText weight="bold" style={styles.metaText}>{weight} kg lifted</StyledText>
         </View>
       </View>
     )

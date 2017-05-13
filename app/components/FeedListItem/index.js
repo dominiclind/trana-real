@@ -15,6 +15,7 @@ import { distanceInWordsToNow, differenceInMinutes } from 'date-fns';
 import StyledText from 'app/components/StyledText';
 import WorkoutMeta from 'app/components/WorkoutMeta';
 
+import { getTotalWeight } from 'app/utils/workout';
 
 
 class FeedListItem extends Component {
@@ -47,7 +48,10 @@ class FeedListItem extends Component {
           <StyledText style={styles.date}>{distanceInWordsToNow(endDate)} ago</StyledText>
 
           <View style={styles.meta}>
-            <WorkoutMeta minutes={differenceInMinutes(endDate,startDate)}/>
+            <WorkoutMeta
+              weight={getTotalWeight(sets)}
+              minutes={differenceInMinutes(endDate,startDate)}
+            />
             <Image style={styles.arrowIcon} source={require('./arrow_icon.png')}/>
           </View>
 

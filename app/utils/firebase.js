@@ -1,5 +1,3 @@
-// import Firestack from 'react-native-firestack';
-import NavStore from 'app/stores/Nav';
 import firebase from 'firebase';
 
 var config = {
@@ -21,23 +19,8 @@ const returnFirebaseAsArray = (snapshot) => {
   return toReturn
 }
 
-
-// const firestack = new Firestack({
-//   debug: true
-// });
-
-// firestack.on('debug', msg => log(msg));
-
-
 // check login
 export const checkLogin = (cb) =>{
-	// firestack.auth
-	// .listenForAuth((response) => {
-	// 	console.log(response);
-	// })
-	// .then(() => {
-	// 	console.log('Listening for authentication changes')
-	// });
 	firebase.auth().onAuthStateChanged(function(user) {
 		cb(user);
 	  if (user) {
@@ -77,21 +60,6 @@ export const login = (token) => {
 
 // logout
 export const logout = () => firebase.auth().signOut();
-
-// get feed
-// export const getFeed = (uid) => {
-//   return new Promise((resolve, reject) => {
-// 	  firestack.database.ref('users')
-// 	  .child(uid)
-// 	  .child('workouts')
-// 	  .once('value')
-// 	  .then((snapshot) => {
-// 	    if (snapshot.val) {
-// 	      resolve(returnFirebaseAsArray(snapshot));
-// 	    }
-// 	  })
-// 	}).catch(error => console.log(error));
-// }
 
 // get feed
 export const getFeed = () => {

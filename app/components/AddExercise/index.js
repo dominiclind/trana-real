@@ -31,7 +31,6 @@ import ExerciseListItemSmall from 'app/components/ExerciseListItemSmall';
 import FilterList from 'app/components/FilterList';
 import StyledText from 'app/components/StyledText';
 
-import Firebase from 'app/stores/Firebase';
 
 
 const SEARCH_LENGTH = 2;

@@ -17,7 +17,6 @@ const { height, width } = Dimensions.get('window');
 import Header from 'app/components/Header';
 import StyledText from 'app/components/StyledText';
 import Button from 'app/components/Button';
-import WorkoutStore from 'app/stores/Workout';
 
 const xOffset = new Animated.Value(0);
 

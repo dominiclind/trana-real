@@ -1,5 +1,16 @@
 const onlyUnique = (value, index, self) => self.indexOf(value) === index;
 
+function addCommas(nStr) {
+    nStr += '';
+    var x = nStr.split('.');
+    var x1 = x[0];
+    var x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
+}
 
 const getExercisesForWorkout = (workout = [], all = []) => {
 	const arr = [];
@@ -55,6 +66,19 @@ const getBodypartsWorked = (exercises) => {
 
 	return uniqueArray.slice() + '';
 
+}
+
+export function getTotalWeight(exercises) {
+	let total = 0;
+	// each exercise
+	Object.keys(exercises).map(key => {
+		// each set
+		exercises[key].map(set => {
+			total = total + (set.reps * Number(set.weight || 0));
+		})
+	}) ;
+
+	return addCommas(total);
 }
 
 export {

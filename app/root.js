@@ -27,13 +27,7 @@ class Root extends Component {
     codePush.sync(codePushOptions);
   }
   componentDidMount() {
-    PerfMonitor.toggle();
-    setTimeout(() => {
-      PerfMonitor.start();
-      setTimeout(() => {
-        PerfMonitor.stop();
-      }, 10000);
-    }, 5000);
+
   }
   render () {
     return (

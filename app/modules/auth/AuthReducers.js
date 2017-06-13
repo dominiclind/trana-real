@@ -1,6 +1,8 @@
 import {
   CHECK_LOGIN,
   CHECK_LOGIN_SUCCESS,
+  GET_ME,
+  GET_ME_SUCCESS,
   LOGOUT
 } from './AuthActions';
 
@@ -24,6 +26,17 @@ export default function auth(state = initialState, action) {
         ...state,
         loading: false,
         user: action.user
+      }
+    case GET_ME:
+      return {
+        ...state,
+        loading: true,
+      }
+    case GET_ME_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        me: action.me
       }
     case LOGOUT:
       return {

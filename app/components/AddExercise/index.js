@@ -13,6 +13,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 
+import shallowCompare from 'react-addons-shallow-compare'
 
 import {warn, log} from 'app/utils/log';
 
@@ -26,7 +27,7 @@ import { getExercises, getBodybuildingExercises } from 'app/utils/api';
 
 import Paragraph from 'app/components/Paragraph';
 import Button from 'app/components/Button';
-import ExerciseListItem from 'app/components/ExerciseListItem';
+// import ExerciseListItem from 'app/components/ExerciseListItem';
 import ExerciseListItemSmall from 'app/components/ExerciseListItemSmall';
 import FilterList from 'app/components/FilterList';
 import StyledText from 'app/components/StyledText';
@@ -42,8 +43,20 @@ class AddExercise extends Component {
 
     this.state = {
       search : '',
-      filter: false
+      showFilter:false
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if(
+      this.state.search != nextState.search ||
+      this.state.showFilter != nextState.showFilter ||
+      this.props.filters.bodyparts.length != nextProps.filters.bodyparts.length
+    ) {
+      return true
+    } else {
+      return false
+    }
   }
 
   componentDidMount() {
@@ -112,63 +125,66 @@ class AddExercise extends Component {
       filters,
     } = this.props;
 
-    console.log('hey');
-
     return (
-      <ScrollView style={ styles.component }>
-        <Paragraph style={{paddingLeft: 20, marginTop:80}} weight="bold">Top Exercises</Paragraph>
-        {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
-          const $e = this._filter(featured, exercises, false)[key];
-          return (
-            <ExerciseListItemSmall
-              key={index}
-              exercise={$e}
-              onAdd={() => this.addExercise($e)}
-            />
-          )
-        })} 
-        
-        <View style={styles.inputWrap}>
-          <View style={styles.searchInput}>
-            <Icon name="md-search" style={styles.searchIcon}/>
-            <TextInput
-              value={this.state.search}
-              onChangeText={(text) => this.setState({search: text})}
-              autoCapitalize="characters"
-              autoCorrect={false}
-              placeholderTextColor="rgba(255,255,255,.4)"
-              placeholder={`Type at least ${SEARCH_LENGTH+1} characters`}
-              style={styles.input}
-            />
-            <TouchableWithoutFeedback
-              onPress={() => this.setState({showFilter: !this.state.showFilter})
-            }>
-              <View>
-                <Icon style={[styles.searchIcon, styles.filterBtn]} name="md-more"/>
-                {filters.bodyparts.length ? (
-                  <StyledText weight="bold" style={[styles.filterCount]}>{filters.bodyparts.length}</StyledText>
-                ) : null}
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-          {this.state.showFilter ? (
-            <FilterList filters={filters} toggleBodypart={(bodypart) => this.props.toggleBodypart(bodypart)}/>
-          ): null}
+      <View style={{flex:1}}>
+        <View style={styles.searchInput}>
+          <Icon name="md-search" style={styles.searchIcon}/>
+          <TextInput
+            value={this.state.search}
+            onChangeText={(text) => this.setState({search: text})}
+            autoCapitalize="characters"
+            autoCorrect={false}
+            placeholderTextColor="rgba(255,255,255,.4)"
+            placeholder={`Type at least ${SEARCH_LENGTH+1} characters`}
+            style={styles.input}
+          />
+          <TouchableOpacity
+            onPress={() => this.setState({showFilter: !this.state.showFilter})
+          }>
+            <View>
+              <Icon style={[styles.searchIcon, styles.filterBtn]} name="md-more"/>
+              {filters.bodyparts.length ? (
+                <StyledText weight="bold" style={[styles.filterCount]}>{filters.bodyparts.length}</StyledText>
+              ) : null}
+            </View>
+          </TouchableOpacity>
         </View>
+        
+        {this.state.showFilter ? (
+          <FilterList filters={filters} toggleBodypart={(bodypart) => this.props.toggleBodypart(bodypart)}/>
+        ): null}
 
-        <Paragraph style={{paddingLeft: 20, marginTop:20}} weight="bold">All the others...</Paragraph>
-        {Object.keys(this._filter(all, exercises, false, featured)).map((key, index) => {
-          const $e = this._filter(all, exercises, false, featured)[key];
-          return (
-            <ExerciseListItemSmall
-              key={index}
-              exercise={$e}
-              onAdd={() => this.addExercise($e)}
-            />
-          )
-        })}
+        <ScrollView 
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="always"
+          style={ styles.component }
+        >
+          <Paragraph style={{paddingLeft: 20, marginTop:20}} weight="bold">Top Exercises</Paragraph>
+          {Object.keys(this._filter(featured, exercises, false)).map((key, index) => {
+            const $e = this._filter(featured, exercises, false)[key];
+            return (
+              <ExerciseListItemSmall
+                key={index}
+                exercise={$e}
+                onAdd={() => this.addExercise($e)}
+              />
+            )
+          })} 
 
-      </ScrollView>
+          <Paragraph style={{paddingLeft: 20, marginTop:20}} weight="bold">All the others...</Paragraph>
+          {Object.keys(this._filter(all, exercises, false, featured)).map((key, index) => {
+            const $e = this._filter(all, exercises, false, featured)[key];
+            return (
+              <ExerciseListItemSmall
+                key={index}
+                exercise={$e}
+                onAdd={() => this.addExercise($e)}
+              />
+            )
+          })}
+
+        </ScrollView>
+      </View>
     )
   }
 }
@@ -179,12 +195,6 @@ const styles = StyleSheet.create({
   component : {
     backgroundColor:'rgba(0,0,0,.07)',
     flex: 1,
-  },
-  inputWrap: {
-    position: 'absolute',
-    top:0,
-    left:0,
-    right:0
   },
   searchInput: {
     flexDirection: 'row',

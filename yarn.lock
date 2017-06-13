@@ -3412,7 +3412,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.0.0:
+prop-types@^15.0.0, prop-types@^15.5.8:
   version "15.5.8"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
   dependencies:
@@ -3496,6 +3496,13 @@ rc@^1.0.1, rc@^1.1.6:
 react-addons-pure-render-mixin@15.0.2, react-addons-pure-render-mixin@^15.0.2:
   version "15.0.2"
   resolved "https://registry.yarnpkg.com/react-addons-pure-render-mixin/-/react-addons-pure-render-mixin-15.0.2.tgz#b7731c5cc7f21214d68a78c84f40df3aefdf462f"
+
+react-addons-shallow-compare@^15.5.2:
+  version "15.5.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.5.2.tgz#7cb0ee7acc8d7c93fcc202df0bf47ba916a7bdad"
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
 
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
@@ -3595,6 +3602,12 @@ react-native-social-auth@^0.5.10:
 react-native-swipe-gestures@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.2.tgz#914e1a72a94bc55b322b4622a01103ab879296dd"
+
+react-native-tab-view@^0.0.65:
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.65.tgz#b685ea3081ff7c96486cd997361026c407302c59"
+  dependencies:
+    prop-types "^15.5.8"
 
 react-native-tabs@^1.0.9:
   version "1.0.9"

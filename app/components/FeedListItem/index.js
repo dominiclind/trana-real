@@ -116,4 +116,32 @@ const styles = StyleSheet.create({
 });
 
 
-export default FeedListItem
+// export default FeedListItem
+
+export default (props) => (
+<TouchableOpacity style={ styles.component } onPress={props.onPress}>
+  <View style={styles.imageContainer}>
+    <Image
+      source={{uri : props.user.photoURL}}
+      style={styles.image}
+    />
+  </View>
+  <View style={styles.contentContainer}>
+
+    <StyledText style={styles.name} weight="bold">{props.user.displayName}</StyledText>
+    <StyledText style={styles.desc}>Just finished a <StyledText weight="bold">{getBodypartsWorked(props.exercises)}</StyledText> workout</StyledText>
+    <StyledText style={styles.date}>{distanceInWordsToNow(props.endDate)} ago</StyledText>
+
+    <View style={styles.meta}>
+      <WorkoutMeta
+        weight={getTotalWeight(props.sets)}
+        minutes={differenceInMinutes(props.endDate,props.startDate)}
+      />
+      <Image style={styles.arrowIcon} source={require('./arrow_icon.png')}/>
+    </View>
+
+    
+
+  </View>
+</TouchableOpacity>
+)

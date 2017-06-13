@@ -8,23 +8,6 @@ import {
 
 import Paragraph from 'app/components/Paragraph';
 
-class WorkoutNavbar extends Component {
-
-  render() {
-    return (
-      <View style={ styles.component }>
-        <TouchableOpacity onPress={this.props.cancelWorkout}>
-          <Paragraph style={styles.btn} weight="bold">CANCEL</Paragraph>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.props.endWorkout}>
-          <Paragraph style={styles.btn} weight="bold">FINISH</Paragraph>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-}
-
-
 // styles
 const styles = StyleSheet.create({
   component : {
@@ -57,4 +40,14 @@ const styles = StyleSheet.create({
 });
 
 
-export default WorkoutNavbar
+// export default WorkoutNavbar
+export default (props) => (
+  <View style={ styles.component }>
+    <TouchableOpacity onPress={props.cancelWorkout}>
+      <Paragraph style={styles.btn} weight="bold">CANCEL</Paragraph>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={props.endWorkout}>
+      <Paragraph style={styles.btn} weight="bold">FINISH</Paragraph>
+    </TouchableOpacity>
+  </View>
+)

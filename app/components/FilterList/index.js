@@ -5,10 +5,13 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
   TouchableWithoutFeedback
 } from 'react-native';
 
 import StyledText from 'app/components/StyledText';
+import shallowCompare from 'react-addons-shallow-compare'
+
 
 
 class FilterList extends Component {
@@ -17,6 +20,12 @@ class FilterList extends Component {
     this.props.toggleBodypart(bodypart);
   }
 
+  
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+    //return false;
+  }
+  
   render() {
     const { filters } = this.props;
     return (
@@ -26,18 +35,16 @@ class FilterList extends Component {
           {['legs', 'chest', 'back', 'arms', 'shoulders', 'abs'].map((bodypart, index) => {
           
             return (
-              <TouchableWithoutFeedback  key={index} onPress={() => this.toggleBodypart(bodypart)}>
-                <View style={styles.col}>
-                  <StyledText 
-                    weight="bold"
-                    style={[
-                      styles.text,
-                      styles.center,
-                      styles.bodyTag,
-                      filters.bodyparts.indexOf(bodypart) > -1 ? styles.active : {}
-                    ]}>{bodypart.toUpperCase()}</StyledText>
-                </View>
-              </TouchableWithoutFeedback>
+              <TouchableOpacity style={styles.col} key={index} onPress={() => this.toggleBodypart(bodypart)}>
+                <StyledText 
+                  weight="bold"
+                  style={[
+                    styles.text,
+                    styles.center,
+                    styles.bodyTag,
+                    filters.bodyparts.indexOf(bodypart) > -1 ? styles.active : {}
+                  ]}>{bodypart.toUpperCase()}</StyledText>
+              </TouchableOpacity>
             )
           })}
         </View>
@@ -51,12 +58,12 @@ class FilterList extends Component {
 // styles
 const styles = StyleSheet.create({
   component : {
-    paddingVertical: 20,
-    backgroundColor:'#171717',
+    paddingTop:20,
+    backgroundColor:'black',
   },
   grid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   center: {
     textAlign:'center'
@@ -69,8 +76,8 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   col: {
+    height:50,
     width: Dimensions.get('window').width / 2,
-    height: 50
   },
   bodyTag: {
     fontSize: 16,

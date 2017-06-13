@@ -6,6 +6,7 @@ import {
   Animated
 } from 'react-native';
 import onecolor from 'onecolor';
+import shallowCompare from 'react-addons-shallow-compare'
 
 import StyledText from 'app/components/StyledText';
 
@@ -19,6 +20,9 @@ class Button extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
   componentDidMount() {
   }
 

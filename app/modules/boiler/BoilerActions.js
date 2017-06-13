@@ -7,7 +7,6 @@ export const GET_THING = 'GET_THING';
 
 export function getThing() {
   return (dispatch) => {
-  	console.log('get thing');
     dispatch({ type: GET_THING });
   }
 }

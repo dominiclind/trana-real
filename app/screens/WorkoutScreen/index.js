@@ -34,6 +34,8 @@ import Paragraph from 'app/components/Paragraph';
 import AddExercise from 'app/components/AddExercise';
 import ExerciseSimple from 'app/components/ExerciseSimple';
 
+const defaultArray = [];
+const defaultObject = {};
 
 class WorkoutScreen extends Component {
 
@@ -129,7 +131,7 @@ class WorkoutScreen extends Component {
                   deleteExercise={(exercise) => this._deleteExercise(exercise)}
                   addSet={() => this._addSet(exercise)}
                   exercise={exercise}
-                  sets={sets[exercise.id] || []}
+                  sets={sets[exercise.id] || defaultArray}
                   onSetChange={(index, set) => this._performSet(exercise, index, set)}
                 />
               </View>
@@ -171,7 +173,7 @@ class WorkoutScreen extends Component {
                       key={i}
                       onPress={() => this.setState({selectedEmoji: i})}
                     >
-                      <Paragraph style={[styles.icon, i == this.state.selectedEmoji ? styles.iconSelected : {}]}>{moji.icon}</Paragraph>
+                      <Paragraph style={[styles.icon, i == this.state.selectedEmoji ? styles.iconSelected : defaultObject]}>{moji.icon}</Paragraph>
                     </TouchableOpacity>
                   )
                 })}
@@ -246,8 +248,6 @@ const styles = StyleSheet.create({
 // get relevant props from state
 function mapStateToProps(state) {
   const { workout } = state;
-
-  log(workout);
   return {
     workout
   };

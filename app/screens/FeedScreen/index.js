@@ -19,9 +19,6 @@ import Paragraph from 'app/components/Paragraph';
 import Me from 'app/components/Me';
 import Button from 'app/components/Button';
 import FeedListItem from 'app/components/FeedListItem';
-
-import {getExercisesForWorkout} from 'app/utils/workout';
-
 class FeedScreen extends Component {
 
   constructor(props) {

@@ -40,9 +40,6 @@ const getAllExercises = () => new Promise((resolve, reject) => {
 });
 
 const pushOnWorkoutEnd = (user,workout) => new Promise((resolve, reject) => {
-  console.log('pushOnWorkoutEnd');
-  console.log(user, workout);
-
   axios.post(`${Config.API_URL}/push/endworkout`, { user,workout })
   .then(response => {
     console.log(response);

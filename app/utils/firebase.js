@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import * as utils from 'app/utils/misc';
 
 var config = {
   apiKey: "AIzaSyCm_QCK3cp_T4LCGWv0JHZQrlrSFXLsB1I",
@@ -9,15 +10,6 @@ var config = {
   messagingSenderId: "691845579867"
 };
 firebase.initializeApp(config);
-
-const returnFirebaseAsArray = (snapshot) => {
-  const toReturn = [];
-
-  Object.keys(snapshot).map((key, index) => {
-  	toReturn.push({value: snapshot[key], id: key });
-  })
-  return toReturn
-}
 
 // check login
 export const checkLogin = (cb) =>{
@@ -61,6 +53,21 @@ export const login = (token) => {
 // logout
 export const logout = () => firebase.auth().signOut();
 
+// get user
+export const getUser = (user) => {
+  return new Promise((resolve, reject) => {
+	  firebase.database()
+	  .ref('users')
+  	.child(user.uid)
+	  .once('value')
+	  .then((snapshot) => {
+	    if (snapshot.val) {
+	      resolve(snapshot.val());
+	    }
+	  })
+	}).catch(error => console.log(error));
+}
+
 // get feed
 export const getFeed = () => {
   return new Promise((resolve, reject) => {
@@ -68,14 +75,29 @@ export const getFeed = () => {
 	  .once('value')
 	  .then((snapshot) => {
 	    if (snapshot.val) {
-	      resolve(returnFirebaseAsArray(snapshot.val()));
+	      resolve(utils.returnObjectAsArray(snapshot.val()));
 	    }
 	  })
 	}).catch(error => console.log(error));
 }
 
 // save to feed
-export const saveToFeed = (workout) => {
+export const saveToFeed = (user, workout) => {
 	console.log(workout);
-  firebase.database().ref('feed').push(workout)
+  firebase.database()
+  	.ref('feed')
+  	.push(workout);
+  firebase.database()
+  	.ref('users')
+  	.child(user.uid)
+  	.child('workouts')
+  	.push(workout);
+}
+
+// set push token on user
+export const setPushCredentials = (user, credentials) => {
+  firebase.database()
+  	.ref('users')
+	  .child(user.uid)
+	  .set('pushCredentials', credentials);
 }

@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 
 import Button from 'app/components/Button';
-import Countdown from 'app/components/Countdown';
 import Header from 'app/components/Header';
 import Paragraph from 'app/components/Paragraph';
 import ParallaxHeader from 'app/components/ParallaxHeader';

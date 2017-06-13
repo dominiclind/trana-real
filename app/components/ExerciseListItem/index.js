@@ -15,45 +15,47 @@ import Paragraph from 'app/components/Paragraph';
 import {getNormalizedBodyPart} from 'app/utils/workout';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-class ExerciseListItem extends Component {
+// class ExerciseListItem extends Component {
 
-  constructor(props) {
-    super(props)
-  }
+//   constructor(props) {
+//     super(props)
+//   }
 
-  componentDidMount() {
-  }
+//   shouldComponentUpdate(nextProps, nextState) {
+//     //return shallowCompare(this, nextProps, nextState);
+//     return false;
+//   }
 
-  render() {
-    const { exercise } = this.props;
+//   render() {
+//     const { exercise } = this.props;
 
-    const bodyPart = getNormalizedBodyPart(exercise['Main Muscle Worked'].trim());
+//     const bodyPart = getNormalizedBodyPart(exercise['Main Muscle Worked'].trim());
 
-    return (
-      <View style={styles.listItemWrap}>
+//     return (
+//       <View style={styles.listItemWrap}>
 
-        <View style={styles.listItemShadow}>
-        <View style={styles.listItem}>
-          <Image
-            style={styles.image}
-            source={{uri: exercise.pic_left}}
-          >
-            <View style={styles.tagRow}>
-              <Paragraph weight="bold" style={styles.tag}>{bodyPart.toUpperCase()}</Paragraph>
-            </View>
-          </Image>
-          <View style={styles.textContent}>
-            <Paragraph weight="bold" style={styles.exerciseName}>{exercise.name}</Paragraph>
-            <Paragraph style={styles.equipment}>Equipment: {exercise.Equipment}</Paragraph>
-            <Icon style={styles.icon} name="add" onPress={() => this.props.onAdd()} />
-          </View>
-        </View>
-        </View>
+//         <View style={styles.listItemShadow}>
+//         <View style={styles.listItem}>
+//           <Image
+//             style={styles.image}
+//             source={{uri: exercise.pic_left}}
+//           >
+//             <View style={styles.tagRow}>
+//               <Paragraph weight="bold" style={styles.tag}>{bodyPart.toUpperCase()}</Paragraph>
+//             </View>
+//           </Image>
+//           <View style={styles.textContent}>
+//             <Paragraph weight="bold" style={styles.exerciseName}>{exercise.name}</Paragraph>
+//             <Paragraph style={styles.equipment}>Equipment: {exercise.Equipment}</Paragraph>
+//             <Icon style={styles.icon} name="add" onPress={() => this.props.onAdd()} />
+//           </View>
+//         </View>
+//         </View>
 
-      </View>
-    )
-  }
-}
+//       </View>
+//     )
+//   }
+// }
 
 
 // styles
@@ -125,4 +127,27 @@ const styles = StyleSheet.create({
 });
 
 
-export default ExerciseListItem
+// export default ExerciseListItem
+export default (props) => (
+  <View style={styles.listItemWrap}>
+
+    <View style={styles.listItemShadow}>
+    <View style={styles.listItem}>
+      <Image
+        style={styles.image}
+        source={{uri: props.exercise.pic_left}}
+      >
+        <View style={styles.tagRow}>
+          <Paragraph weight="bold" style={styles.tag}>{getNormalizedBodyPart(props.exercise['Main Muscle Worked'].trim()).toUpperCase()}</Paragraph>
+        </View>
+      </Image>
+      <View style={styles.textContent}>
+        <Paragraph weight="bold" style={styles.exerciseName}>{props.exercise.name}</Paragraph>
+        <Paragraph style={styles.equipment}>Equipment: {props.exercise.Equipment}</Paragraph>
+        <Icon style={styles.icon} name="add" onPress={props.onAdd} />
+      </View>
+    </View>
+    </View>
+
+  </View>
+)

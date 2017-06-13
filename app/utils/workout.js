@@ -1,4 +1,5 @@
 const onlyUnique = (value, index, self) => self.indexOf(value) === index;
+import * as utils from 'app/utils/misc';
 
 function addCommas(nStr) {
     nStr += '';
@@ -12,25 +13,25 @@ function addCommas(nStr) {
     return x1 + x2;
 }
 
-const getExercisesForWorkout = (workout = [], all = []) => {
-	const arr = [];
-	workout.forEach(exercise => {
-		if (exercise.id) {
-			all.forEach(e => {
-				if (exercise.id == e.id) {
-					arr.push({
-						sets : exercise.sets,
-						...e
-					});
-				}
-			});
-		}
-	});
-	return arr;
-};
+// export function getExercisesForWorkout(workout = [], all = []) {
+// 	const arr = [];
+// 	workout.forEach(exercise => {
+// 		if (exercise.id) {
+// 			all.forEach(e => {
+// 				if (exercise.id == e.id) {
+// 					arr.push({
+// 						sets : exercise.sets,
+// 						...e
+// 					});
+// 				}
+// 			});
+// 		}
+// 	});
+// 	return arr;
+// };
 
 
-const getNormalizedBodyPart = (muscle = '') => {
+export function getNormalizedBodyPart(muscle = '') {
 	const legs = ['quadriceps', 'calves', 'glutes', 'hamstrings'];
 	const arms = ['biceps', 'forearms', 'triceps'];
 	const chest = ['chest'];
@@ -55,7 +56,7 @@ const getNormalizedBodyPart = (muscle = '') => {
 	return muscle;
 }
 
-const getBodypartsWorked = (exercises) => {
+export function getBodypartsWorked(exercises) {
 	const arrOfBodyParts = [];
 
 	exercises.forEach(e => {
@@ -81,8 +82,45 @@ export function getTotalWeight(exercises) {
 	return addCommas(total);
 }
 
-export {
-	getBodypartsWorked,
-	getNormalizedBodyPart,
-	getExercisesForWorkout
-};
+export function getExercisesForUser(user) {
+	const { workouts } = user;
+
+	const exercises = [];
+	utils.returnObjectAsArray(workouts).forEach(({value:workout} = workout) => {
+		const {exercises:es, sets, startDate} = workout;
+		es.forEach(e => exercises.push({
+			id: e.id,
+			startDate,
+			sets: sets[e.id]
+		}));
+	});
+
+	// all
+	const exercisesById = {};
+	exercises.forEach((e) => {
+		exercisesById[e.id] = {};
+	});
+
+	Object.keys(exercisesById).forEach(id => {
+		// for every unique execise
+		const current =  [];
+		exercises.forEach(e => {
+			if(e.id == id) {
+				current.push({
+					date: e.startDate,
+					sets: e.sets
+				});
+			}
+		});
+
+		exercisesById[id] = {
+			all : current
+		}
+	});
+
+
+	console.log(exercisesById);
+
+
+}
+

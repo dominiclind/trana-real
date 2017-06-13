@@ -15,78 +15,6 @@ import Set from 'app/components/Set';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-
-class ExerciseSimple extends Component {
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      currentSet: 0,
-      sets: props.exercise.sets || []
-    }
-  }
-
-  componentDidMount() {
-  }
-
-  _addSet() {
-    const { exercise } = this.props;
-    this.props.addSet(exercise);
-  }
-  _performSet() {
-    const { exercise } = this.props;
-    this.props.performSet({index, set: current });
-  }
-  _deleteExercise() {
-    const { exercise } = this.props;
-    this.props.deleteExercise(exercise);
-  }
-
-  render() {
-    const { fullscreen, exercise, sets = [] } = this.props;
-    return (
-      <View style={ styles.component }>
-        <Header style={styles.header}>{exercise.name}</Header>
-
-        <Icon
-          style={styles.close}
-          name="md-remove-circle"
-          size={30}
-          color="black"
-          onPress={() => this._deleteExercise()}
-        />
-
-        <View style={styles.tableHeader}>
-          <Paragraph weight="bold" style={styles.tableHeaderReps}>SET</Paragraph>
-          <Paragraph weight="bold" style={styles.tableHeaderReps}>REPS</Paragraph>
-          <Paragraph weight="bold" style={styles.tableHeaderWeight}>WEIGHT</Paragraph>
-        </View>
-
-        <ScrollView
-          style={styles.scrollView}
-          keyboardShouldPersistTaps="always"
-          keyboardDismissMode="on-drag"
-        >
-          {sets.map((set, index) => (
-            <Set
-              key={index}
-              index={index}
-              set={set}
-              onRepsChange={(reps) => this.props.onSetChange(index, {reps})}
-              onWeightChange={(weight) => this.props.onSetChange(index, {weight})}
-            />
-          ))}
-          <View style={styles.addNewSetWrap}>
-            <Button onPress={() => this._addSet()}>Add Set</Button>
-          </View>
-        </ScrollView>
-      </View>
-    )
-  }
-}
-
-
 // styles
 const styles = StyleSheet.create({
   component : {
@@ -137,4 +65,43 @@ const styles = StyleSheet.create({
 });
 
 
-export default ExerciseSimple
+// export default ExerciseSimple
+
+export default ({ fullscreen, exercise, sets = [], deleteExercise, onSetChange, addSet}) => (
+  <View style={ styles.component }>
+    <Header style={styles.header}>{exercise.name}</Header>
+
+    <Icon
+      style={styles.close}
+      name="md-remove-circle"
+      size={30}
+      color="black"
+      onPress={() => deleteExercise(exercise)}
+    />
+
+    <View style={styles.tableHeader}>
+      <Paragraph weight="bold" style={styles.tableHeaderReps}>SET</Paragraph>
+      <Paragraph weight="bold" style={styles.tableHeaderReps}>REPS</Paragraph>
+      <Paragraph weight="bold" style={styles.tableHeaderWeight}>WEIGHT</Paragraph>
+    </View>
+
+    <ScrollView
+      style={styles.scrollView}
+      keyboardShouldPersistTaps="always"
+      keyboardDismissMode="on-drag"
+    >
+      {sets.map((set, index) => (
+        <Set
+          key={index}
+          index={index}
+          set={set}
+          onRepsChange={(reps) => onSetChange(index, {reps})}
+          onWeightChange={(weight) => onSetChange(index, {weight})}
+        />
+      ))}
+      <View style={styles.addNewSetWrap}>
+        <Button onPress={() => addSet(exercise)}>Add Set</Button>
+      </View>
+    </ScrollView>
+  </View>
+)

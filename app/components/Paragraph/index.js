@@ -5,12 +5,14 @@ import {
   StyleSheet
 } from 'react-native';
 
+const defaultObject = {};
+
 import StyledText from 'app/components/StyledText';
 
 const Paragraph = (props) => (
   <StyledText
     weight={props.weight || "book"}
-    style={[styles.text, props.style || {}]}>
+    style={[styles.text, props.style || defaultObject]}>
       {props.children}
     </StyledText>
 )

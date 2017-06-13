@@ -7,69 +7,75 @@ import {
   StyleSheet
 } from 'react-native';
 
+import shallowCompare from 'react-addons-shallow-compare'
 import Paragraph from 'app/components/Paragraph';
 
-class Set extends Component {
+// class Set extends Component {
 
-  constructor(props) {
-    super(props)
-  }
+//   constructor(props) {
+//     super(props)
+//   }
 
-  componentDidMount() {
-  }
+//   componentDidMount() {
+//   }
 
-  render() {
-    const { index, set = {} } = this.props;
+//   shouldComponentUpdate(nextProps, nextState) {
+//     return shallowCompare(this, nextProps, nextState);
+//   }
 
-    return (
-      <View 
-        key={index}
-        style={[
-          styles.setItem,
-          { zIndex: 100-index }
-        ]}
-      >
-        <Paragraph style={styles.setIndicator}>{index+1}</Paragraph>
-        <TextInput
-          value={set.reps || ''}
-          onChangeText={(text) => {
-            // set.reps = text;
-            this.props.onRepsChange(text);
-          }}
-          onEndEditing={() => {
-            // WorkoutStore.saveSet(exercise, index, {reps: this.state.sets[index].reps});
-          }}
-          autoCapitalize="characters"
-          maxLength={2} 
-          keyboardType="phone-pad"
-          returnKeyType="done"
-          autoCorrect={false}
-          placeholder="12"
-          placeholderTextColor="rgba(0,0,0,.15)"
-          style={[styles.input, {width: 50}]}
-        />
-        <Paragraph style={styles.asterix}>*</Paragraph>
-        <TextInput
-          value={set.weight || ''}
-          onChangeText={(text) => {
-            // set.weight = text;
-            this.props.onWeightChange(text);
-          }}
-          onEndEditing={() => {
-          }}
-          maxLength={3}
-          autoCapitalize="characters"
-          keyboardType="phone-pad"
-          returnKeyType="done"
-          autoCorrect={false}
-          placeholder="80"
-          placeholderTextColor="rgba(0,0,0,.15)"
-          style={styles.input}
-        />
-      </View>
-    )
-  }
-}
+
+//   render() {
+//     const { index, set = {} } = this.props;
+
+//     return (
+//       <View 
+//         key={index}
+//         style={[
+//           styles.setItem,
+//           { zIndex: 100-index }
+//         ]}
+//       >
+//         <Paragraph style={styles.setIndicator}>{index+1}</Paragraph>
+//         <TextInput
+//           value={set.reps || ''}
+//           onChangeText={(text) => {
+//             // set.reps = text;
+//             this.props.onRepsChange(text);
+//           }}
+//           onEndEditing={() => {
+//             // WorkoutStore.saveSet(exercise, index, {reps: this.state.sets[index].reps});
+//           }}
+//           autoCapitalize="characters"
+//           maxLength={2} 
+//           keyboardType="phone-pad"
+//           returnKeyType="done"
+//           autoCorrect={false}
+//           placeholder="12"
+//           placeholderTextColor="rgba(0,0,0,.15)"
+//           style={[styles.input, {width: 50}]}
+//         />
+//         <Paragraph style={styles.asterix}>*</Paragraph>
+//         <TextInput
+//           value={set.weight || ''}
+//           onChangeText={(text) => {
+//             // set.weight = text;
+//             this.props.onWeightChange(text);
+//           }}
+//           onEndEditing={() => {
+//           }}
+//           maxLength={3}
+//           autoCapitalize="characters"
+//           keyboardType="phone-pad"
+//           returnKeyType="done"
+//           autoCorrect={false}
+//           placeholder="80"
+//           placeholderTextColor="rgba(0,0,0,.15)"
+//           style={styles.input}
+//         />
+//       </View>
+//     )
+//   }
+// }
 
 
 // styles
@@ -127,4 +133,55 @@ const styles = StyleSheet.create({
 });
 
 
-export default Set
+// export default Set
+
+const defaultString = '';
+const defaultObject = {};
+
+export default ({ index, set}) => (
+  <View 
+    key={index}
+    style={[
+      styles.setItem,
+      { zIndex: 100-index }
+    ]}
+  >
+    <Paragraph style={styles.setIndicator}>{index+1}</Paragraph>
+    <TextInput
+      value={set.reps || defaultString}
+      onChangeText={(text) => {
+        // set.reps = text;
+        this.props.onRepsChange(text);
+      }}
+      onEndEditing={() => {
+        // WorkoutStore.saveSet(exercise, index, {reps: this.state.sets[index].reps});
+      }}
+      autoCapitalize="characters"
+      maxLength={2} 
+      keyboardType="phone-pad"
+      returnKeyType="done"
+      autoCorrect={false}
+      placeholder="12"
+      placeholderTextColor="rgba(0,0,0,.15)"
+      style={[styles.input, {width: 50}]}
+    />
+    <Paragraph style={styles.asterix}>*</Paragraph>
+    <TextInput
+      value={set.weight || defaultString}
+      onChangeText={(text) => {
+        // set.weight = text;
+        this.props.onWeightChange(text);
+      }}
+      onEndEditing={() => {
+      }}
+      maxLength={3}
+      autoCapitalize="characters"
+      keyboardType="phone-pad"
+      returnKeyType="done"
+      autoCorrect={false}
+      placeholder="80"
+      placeholderTextColor="rgba(0,0,0,.15)"
+      style={styles.input}
+    />
+  </View>
+)

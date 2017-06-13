@@ -6,7 +6,7 @@ import store from 'react-native-simple-store';
 import * as firebase from 'app/utils/firebase';
 
 import {warn, log} from 'app/utils/log';
-import {getBodybuildingExercises} from 'app/utils/api';
+import {getBodybuildingExercises, pushOnWorkoutEnd} from 'app/utils/api';
 
 export const START_WORKOUT = 'WORKOUT/START_WORKOUT';
 export const ADD_EXERCISE = 'WORKOUT/ADD_EXERCISE';
@@ -44,7 +44,6 @@ export function addExercise(exercise) {
 }
 export function deleteExercise(exercise) {
 	return (dispatch) => {
-		console.log(exercise, 'delete');
 		dispatch({type: DELETE_EXERCISE, exercise });	
 	}
 }
@@ -87,7 +86,8 @@ export function saveToFeed(mood) {
 			user: auth.user
 		};
 		
-		firebase.saveToFeed(saveWorkout);
+		pushOnWorkoutEnd(auth.user, saveWorkout);
+		firebase.saveToFeed(auth.user, saveWorkout);
 		Actions.feed();
 		dispatch({type: SAVE_TO_FEED });
 	}

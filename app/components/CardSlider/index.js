@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import Autocomplete from 'react-native-autocomplete-input';
+import shallowCompare from 'react-addons-shallow-compare'
+
 
 const { height, width } = Dimensions.get('window');
 
@@ -48,6 +50,10 @@ class CardSlider extends Component {
     }
   }
   
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { fullscreen = false } = this.props;
 

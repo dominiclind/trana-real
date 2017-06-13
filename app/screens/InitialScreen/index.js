@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import {warn, log} from 'app/utils/log';
 
-import { checkLogin } from 'app/modules/auth/AuthActions';
+import { boot } from 'app/modules/auth/AuthActions';
 
 
 class InitialScreen extends Component {
@@ -21,7 +21,7 @@ class InitialScreen extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    dispatch(checkLogin());
+    dispatch(boot());
     // Firebase.checkLogin();
   }
 

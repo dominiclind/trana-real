@@ -7,54 +7,35 @@ import {
   Animated
 } from 'react-native';
 
+const defaultObject = {};
 
-class StyledText extends Component {
-  render() {
-    const { weight = false } = this.props;
-
-    //
-    // Circular
-    // Circular-Book
-    // Circular-BookItalic
-    // Circular-Medium
-    // Circular-MediumItalic
-    // Circular-Bold
-    // Circular-BoldItalic
-    // Circular-Black
-    // Circular-BlackItalic
-    //
-    //
-    let fontFamily = 'Circular';
-    switch(weight) {
-      case 'book':
-        fontFamily = 'Circular-Book';
-        break;
-      case 'medium':
-        fontFamily = 'Circular-Medium';
-        break;
-      case 'bold':
-        fontFamily = 'Circular-Bold';
-        break;
-      case 'black':
-        fontFamily = 'Circular-Black';
-        break;
-      default:
-        fontFamily = 'Circular';
-        break;
-    }
-
-    return (
-      <Text
-        style={[
-          styles.text,
-          { fontFamily },
-          this.props.style || {}
-        ]}>
-          {this.props.children}
-        </Text>  
-    )
+const getFontName = (weight = false) => {
+  let fontFamily = 'Circular';
+  switch(weight) {
+    case 'book':
+      return 'Circular-Book';
+    case 'medium':
+      return 'Circular-Medium';
+    case 'bold':
+      return 'Circular-Bold';
+    case 'black':
+      return 'Circular-Black'
+    default:
+      return fontFamily;
   }
 }
+
+const StyledText = (props) => (
+  <Text
+    style={[
+      styles.text,
+      { fontFamily: getFontName(props.weight) },
+      props.style || defaultObject
+    ]}
+  >
+    {props.children}
+  </Text> 
+)
 
 
 // styles
@@ -65,5 +46,4 @@ const styles = StyleSheet.create({
   }
 });
 
-
-export default Animated.createAnimatedComponent(StyledText);
+export default StyledText;

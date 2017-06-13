@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import shallowCompare from 'react-addons-shallow-compare'
+
 
 import StyledText from 'app/components/StyledText';
 
@@ -27,7 +29,9 @@ class ParallaxHeader extends Component {
       scrollY: new Animated.Value(0),
     };
   }
-
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
   componentDidMount() {
   }
 

@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import shallowCompare from 'react-addons-shallow-compare'
 
 
 class CardNavBar extends Component {
@@ -15,6 +16,10 @@ class CardNavBar extends Component {
     super(props)
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+  
   render() {
     return (
       <View style={ styles.component }>

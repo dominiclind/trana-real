@@ -5,51 +5,109 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  StatusBar
+  StatusBar,
+  InteractionManager,
+  ActivityIndicator
 } from 'react-native';
+
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
+
+import { getMe } from 'app/modules/auth/AuthActions';
 
 import Header from 'app/components/Header';
 import Paragraph from 'app/components/Paragraph';
+import ParallaxHeader from 'app/components/ParallaxHeader';
 import ExerciseGuide from 'app/components/ExerciseGuide';
 
-import {getNormalizedBodyPart} from 'app/utils/workout';
+import {getNormalizedBodyPart, getExercisesForUser } from 'app/utils/workout';
 
 
 class ExerciseScreen extends Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      index: 0,
+      ready: false,
+      routes: [
+        { key: '1', title: 'History' },
+        { key: '2', title: 'Guide' },
+      ],
+    }
   }
 
   componentDidMount() {
+    const { dispatch } = this.props;
+
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({ready: true});
+      dispatch(getMe());
+    })
+  }
+
+  _handleChangeTab(index) {
+    this.setState({ index });
+  }
+
+  _renderHeader(props) {
+    return <TabBar {...props} />;
+  }
+
+
+  _renderScene({ route }) {
+    switch (route.key) {
+      case '1':
+        return (
+          <View style={[ styles.screen, { backgroundColor: '#ff4081' } ]} />
+        )
+      case '2':
+        return (
+          <View style={[ styles.screen, { backgroundColor: '#ff4081' } ]} />
+        )
+      default:
+        return null;
+    }
   }
 
   render() {
-    const { exercise } = this.props;
-    console.log(exercise); 
+    const { exercise, auth } = this.props;
+    const { loading, me = false } = auth;
 
+    if(me){
+      getExercisesForUser(me);    
+    }
+    
     return (
-      <ScrollView style={[styles.screen]}>
-        <Image source={{uri: exercise.pic_right}}>
+      <ParallaxHeader
+        onBack={() => Actions.pop()}
+        title={exercise.name}
+        subtitle={getNormalizedBodyPart(exercise['Main Muscle Worked'].trim())}
+      >
+        
         <View style={{
           backgroundColor: 'rgba(0,0,0,.4)',
           justifyContent: 'center',
           alignItems: 'center',
-          height: 300,
+          height: 200,
         }}>
-          <Paragraph weight="bold" style={[styles.text, {fontSize: 25, color: 'white', paddingHorizontal: 20}]}>{exercise.name}</Paragraph>
-
-          <Paragraph weight="black" style={styles.label}>BODYPART</Paragraph>
-          <Paragraph style={styles.text}>{getNormalizedBodyPart(exercise['Main Muscle Worked'].trim())}</Paragraph>
           
-           <Paragraph weight="black" style={styles.label}>EQUIPMENT</Paragraph>
-          <Paragraph style={styles.text}>{exercise['Equipment'].trim()}</Paragraph>
+          {!this.state.ready || loading ? (
+            <ActivityIndicator color="black"/>
+          ) : <Paragraph weight="black">1 RPM GRAPH</Paragraph>}
+          <Paragraph weight="bold">Equipment: {exercise['Equipment']}</Paragraph>
+          <Paragraph weight="bold">times performed</Paragraph>
+          <Paragraph weight="bold">frequency (times a week)</Paragraph>
         </View>
-        </Image>
-      
-        <ExerciseGuide guide={exercise.guide}/>
-        
-      </ScrollView>
+
+        {/*}
+        {exercise.guide ? (
+          <ExerciseGuide guide={exercise.guide}/>
+        ) : null}
+        {*/}
+      </ParallaxHeader>
     )
   }
 }
@@ -58,8 +116,9 @@ class ExerciseScreen extends Component {
 // styles
 const styles = StyleSheet.create({
   screen : {
-    backgroundColor: 'white',
+    backgroundColor: 'red',
     flex: 1,
+    height:300
   },
   label: {
     color: 'white',
@@ -82,5 +141,13 @@ const styles = StyleSheet.create({
   }
 });
 
+// get relevant props from state
+function mapStateToProps(state) {
+  const { auth } = state;
 
-export default ExerciseScreen
+  return {
+    auth
+  };
+}
+
+export default connect(mapStateToProps)(ExerciseScreen);

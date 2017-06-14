@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 const defaultString = '';
 const defaultObject = {};
 
-export default ({ index, set}) => (
+export default ({ index, set, onRepsChange, onWeightChange}) => (
   <View 
     key={index}
     style={[
@@ -151,7 +151,7 @@ export default ({ index, set}) => (
       value={set.reps || defaultString}
       onChangeText={(text) => {
         // set.reps = text;
-        this.props.onRepsChange(text);
+        onRepsChange(text);
       }}
       onEndEditing={() => {
         // WorkoutStore.saveSet(exercise, index, {reps: this.state.sets[index].reps});
@@ -170,7 +170,7 @@ export default ({ index, set}) => (
       value={set.weight || defaultString}
       onChangeText={(text) => {
         // set.weight = text;
-        this.props.onWeightChange(text);
+        onWeightChange(text);
       }}
       onEndEditing={() => {
       }}

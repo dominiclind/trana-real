@@ -11,14 +11,22 @@ export const GET_FEED_SUCCESS = 'FEED/GET_FEED_SUCCESS';
 
 
 export function getFeed() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { auth } = getState();
+
   	dispatch({ type: GET_FEED });
+
   	Promise.all([
       firebase.getFeed(),
+      firebase.getUser(auth.user)
     ]).then(response => {
+      const feed = response[0];
+      const user = response[1];
+
       dispatch({
       	type: GET_FEED_SUCCESS,
         feed: response[0].reverse(),
+        user
       })
     });
   }

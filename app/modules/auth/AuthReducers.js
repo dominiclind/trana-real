@@ -6,6 +6,11 @@ import {
   LOGOUT
 } from './AuthActions';
 
+import {
+  GET_FEED_SUCCESS,
+  GET_FEED,
+} from 'app/modules/feed/FeedActions';
+
 import {warn, log} from 'app/utils/log';
 
 
@@ -37,6 +42,17 @@ export default function auth(state = initialState, action) {
         ...state,
         loading: false,
         me: action.me
+      }
+    case GET_FEED:
+      return {
+        ...state,
+        loading: true,
+      }
+    case GET_FEED_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        me: action.user
       }
     case LOGOUT:
       return {

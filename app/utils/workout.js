@@ -1,6 +1,15 @@
 const onlyUnique = (value, index, self) => self.indexOf(value) === index;
 import * as utils from 'app/utils/misc';
 
+function getRepMax(w, r = 1){
+
+	if(w.length > 1){
+		return  w * (1 + r / 30);
+	} else{
+		return r
+	}
+}
+
 function addCommas(nStr) {
     nStr += '';
     var x = nStr.split('.');
@@ -82,17 +91,21 @@ export function getTotalWeight(exercises) {
 	return addCommas(total);
 }
 
-export function getExercisesForUser(user) {
+export function getExercisesForUser(user, exerciseId = false) {
 	const { workouts } = user;
 
 	const exercises = [];
 	utils.returnObjectAsArray(workouts).forEach(({value:workout} = workout) => {
 		const {exercises:es, sets, startDate} = workout;
-		es.forEach(e => exercises.push({
-			id: e.id,
-			startDate,
-			sets: sets[e.id]
-		}));
+		if(es){
+			es.map(e => {
+				exercises.push({
+					id: e.id,
+					startDate,
+					sets: sets[e.id]
+				});	
+			})
+		}
 	});
 
 	// all
@@ -106,21 +119,26 @@ export function getExercisesForUser(user) {
 		const current =  [];
 		exercises.forEach(e => {
 			if(e.id == id) {
-				current.push({
-					date: e.startDate,
-					sets: e.sets
-				});
+
+				if(e.sets){
+					current.push({
+						date: e.startDate,
+						sets: e.sets,
+						repmax: Math.max(...e.sets.map(set => getRepMax(set.weight, set.reps)))
+					});
+				}
 			}
 		});
 
 		exercisesById[id] = {
-			all : current
+			all : current,
+			repmax: Math.max(...current.map(curr => curr.repmax))
 		}
 	});
 
+	console.log(exercisesById[exerciseId]);
 
-	console.log(exercisesById);
-
+	return exercisesById[exerciseId];
 
 }
 

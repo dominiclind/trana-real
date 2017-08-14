@@ -20,6 +20,7 @@ import Header from 'app/components/Header';
 import Paragraph from 'app/components/Paragraph';
 import ParallaxHeader from 'app/components/ParallaxHeader';
 import ExerciseGuide from 'app/components/ExerciseGuide';
+import Chart from 'app/components/Chart';
 
 import {getNormalizedBodyPart, getExercisesForUser } from 'app/utils/workout';
 
@@ -31,7 +32,7 @@ class ExerciseScreen extends Component {
 
     this.state = {
       index: 0,
-      ready: false,
+      ready: true,
       routes: [
         { key: '1', title: 'History' },
         { key: '2', title: 'Guide' },
@@ -42,10 +43,10 @@ class ExerciseScreen extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    InteractionManager.runAfterInteractions(() => {
-      this.setState({ready: true});
-      dispatch(getMe());
-    })
+    // InteractionManager.runAfterInteractions(() => {
+    //   this.setState({ready: true});
+    //   // dispatch(getMe());
+    // })
   }
 
   _handleChangeTab(index) {
@@ -76,8 +77,9 @@ class ExerciseScreen extends Component {
     const { exercise, auth } = this.props;
     const { loading, me = false } = auth;
 
+    let eWithData;
     if(me){
-      getExercisesForUser(me);    
+      eWithData = getExercisesForUser(me, exercise.id);    
     }
     
     return (
@@ -87,20 +89,17 @@ class ExerciseScreen extends Component {
         subtitle={getNormalizedBodyPart(exercise['Main Muscle Worked'].trim())}
       >
         
-        <View style={{
-          backgroundColor: 'rgba(0,0,0,.4)',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 200,
-        }}>
+        <View>
           
           {!this.state.ready || loading ? (
             <ActivityIndicator color="black"/>
-          ) : <Paragraph weight="black">1 RPM GRAPH</Paragraph>}
+          ) : (
+            <Chart data={eWithData.all}/>
+          )}
+        </View>
           <Paragraph weight="bold">Equipment: {exercise['Equipment']}</Paragraph>
           <Paragraph weight="bold">times performed</Paragraph>
           <Paragraph weight="bold">frequency (times a week)</Paragraph>
-        </View>
 
         {/*}
         {exercise.guide ? (
